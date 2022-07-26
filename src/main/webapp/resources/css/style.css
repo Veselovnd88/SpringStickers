@@ -1,13 +1,13 @@
+.artGroup{
+background-color: orange;
+color: black;
+}
+
 h3 {
     font-family: sans-serif;
     font-size: 1.5em;
     text-transform: uppercase;
     color:green
-}
-
-strong {
-    font-weight: 700;
-    background-color: yellow;
 }
 
 p {

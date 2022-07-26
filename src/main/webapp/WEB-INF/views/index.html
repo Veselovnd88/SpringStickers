@@ -9,8 +9,33 @@
 </head>
 <body>
   <h3> Добро пожаловать в программу для формирования файла с этикетками</h3>
-    <p> Выберите номеклатуру и позицию для размещения</p>
+    <p> Выберите номеклатуру</p>
+  <form>
+    <div class="artGroup">
+        Типы датчиков:
+      <br>
+        <label for="1"> |20.11 1 MPa </label>
+        <input type="radio" value="val1" name="group1" id="1">
+      <label for="2"> |20.11 0.6 MPa </label>
+      <input type="radio" value="val2" name="group1" id="2">
+      <label for="3"> |20.11 10 bar </label>
+      <input type="radio" value="val3" name="group1" id="3">
+      <label for="4"> |20.11 6 bar </label>
+      <input type="radio" value="val4" name="group1" id="4">
+    </div>
+  <p>Выберите позицию для размещения</p>
+    <div class="positions">
+      <p> <select ><!--th:object="${sticker}" th:field="${position}"-->
+        <option th:each="i: ${#numbers.sequence(1,12,1}">
+                <p> th:value="${ i }"> </p>
+      </option>
 
+      </select>
+        <br>
+        <input type="submit" value="Отправить"></p>
+    </div>
+
+  </form>
 
 </body>
 </html>

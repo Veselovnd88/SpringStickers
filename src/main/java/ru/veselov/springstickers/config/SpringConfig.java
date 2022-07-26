@@ -13,14 +13,11 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-@Configuration
+@Configuration//конфигурационный файл
 @ComponentScan("ru.veselov.springstickers")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-
-
-
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -34,9 +31,9 @@ public class SpringConfig implements WebMvcConfigurer {
         templateResolver.setSuffix(".html");
         return templateResolver;
     }
-    //добавления папки с ресурсами например для файлов css
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //добавление папки с ресурсами например для файлов css
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
 
