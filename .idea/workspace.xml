@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="далее">
+    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="Each: thymeleaf done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/command/ChooseArt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/command/ChooseArt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/LabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/LabelController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,9 +69,7 @@
       <option name="adminPort" value="8005" />
       <option name="contextPath" value="/" />
       <option name="docBase" value="$PROJECT_DIR$/src/main/webapp" />
-      <option name="envOptions">
-        <map />
-      </option>
+      <option name="envOptions" />
       <option name="passParentEnvironmentVariables" value="true" />
       <option name="port" value="8080" />
       <option name="tomcatInfo">
@@ -155,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658925140700</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="мучаем перечисления">
+      <created>1658936224842</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1658936224842</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,6 +175,8 @@
     <MESSAGE value="css" />
     <MESSAGE value="dto for position and article" />
     <MESSAGE value="далее" />
-    <option name="LAST_COMMIT_MESSAGE" value="далее" />
+    <MESSAGE value="мучаем перечисления" />
+    <MESSAGE value="Each: thymeleaf done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Each: thymeleaf done" />
   </component>
 </project>

@@ -18,7 +18,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/")
 public class SpringLabelController {
-    private ControllerInt controllerInt;//контроллер который управляет моделью изображений
+    private final ControllerInt controllerInt;//контроллер который управляет моделью изображений
 
     @Autowired
     public SpringLabelController(ControllerInt controllerInt){
@@ -28,6 +28,7 @@ public class SpringLabelController {
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model){
         Map<Integer,LabelSticker> map = controllerInt.getModel().getMap();
+        System.out.println(map);
         model.addAttribute("map",map);
         if(!map.isEmpty()){
             StringBuilder sb = new StringBuilder("Размещены позиции");
@@ -52,16 +53,17 @@ public class SpringLabelController {
         System.out.println(controllerInt.getModel());
         System.out.println(controllerInt.getModel().getArt());
         System.out.println(dto.getArt()+"|||"+dto.getPos());
-        if(dto.getTask().equals("Разместить")){
-            CommandExecutor.execute(Operation.CHOOSE);
-           // System.out.println(controllerInt.getModel().getMap());
-            }
-
-        else if(dto.getTask().equals("Удалить")){
-            controllerInt.onDelete();
-        }
-        else if(dto.getTask().equals("Сохранить")){
-            controllerInt.onSave();
+        switch (dto.getTask()) {
+            case "Разместить":
+                CommandExecutor.execute(Operation.CHOOSE);
+                // System.out.println(controllerInt.getModel().getMap());
+                break;
+            case "Удалить":
+                controllerInt.onDelete();
+                break;
+            case "Сохранить":
+                controllerInt.onSave();
+                break;
         }
         return "redirect:/";
     }
