@@ -1,7 +1,6 @@
 package ru.veselov.springstickers.model;
 //класс для передачи из формы в контроллер данных о позиции и артикулу
 public class DTO {
-
     private int pos=1;
     private int art=1;
     private String serial="";

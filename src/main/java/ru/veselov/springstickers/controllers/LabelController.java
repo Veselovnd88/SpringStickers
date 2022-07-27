@@ -19,7 +19,7 @@ public class LabelController implements ControllerInt{
     }
     @Override
     public int onGetArt() throws InterruptOperationException {
-        return 0;// not used
+        return modelLabel.getArt();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class LabelController implements ControllerInt{
 
     @Override
     public int onGetPos() throws InterruptOperationException {
-        return 0;//not used
+        return modelLabel.getPos();
     }
 
     @Override

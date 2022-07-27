@@ -2,14 +2,18 @@ package ru.veselov.springstickers.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.veselov.springstickers.command.CommandExecutor;
 import ru.veselov.springstickers.command.Operation;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.DTO;
 import ru.veselov.springstickers.model.LabelSticker;
-import ru.veselov.springstickers.model.MainModelLabel;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -22,10 +26,18 @@ public class SpringLabelController {
     }
     @GetMapping()
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
-    public String index(@ModelAttribute("dto") DTO dto){
-
-
-
+    public String index(@ModelAttribute("dto") DTO dto, Model model){
+        Map<Integer,LabelSticker> map = controllerInt.getModel().getMap();
+        model.addAttribute("map",map);
+        if(!map.isEmpty()){
+            StringBuilder sb = new StringBuilder("Размещены позиции");
+            for(Map.Entry<Integer,LabelSticker> entry: map.entrySet()){
+                sb.append(String.format("Позиция %d Датчик %s на %s с номером %s",
+                        entry.getKey(),entry.getValue().getName(),
+                        entry.getValue().getRange(),
+                        entry.getValue().getSerial()));
+            }
+        dto.setMessage(sb.toString());}
         return "/index";
     }
 
@@ -42,11 +54,8 @@ public class SpringLabelController {
         System.out.println(dto.getArt()+"|||"+dto.getPos());
         if(dto.getTask().equals("Разместить")){
             CommandExecutor.execute(Operation.CHOOSE);
-            dto.setMessage(String.format("Размещена позиция %s %s %s"//output to chosen source
-                    ,dto.getPos(),
-                    controllerInt.getModel().getMap().get(dto.getPos()).getName(),
-                    controllerInt.getModel().getMap().get(dto.getPos()).getSerial()));
-        }
+           // System.out.println(controllerInt.getModel().getMap());
+            }
 
         else if(dto.getTask().equals("Удалить")){
             controllerInt.onDelete();

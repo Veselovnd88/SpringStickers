@@ -18,6 +18,7 @@ public class ChooseArt implements Command {
 
 		int art = controller.onGetArt();
 		int pos = controller.onGetPos();
+
 		Map<Integer, LabelSticker> map = controller.getModel().getMap();
 		String serial = controller.onReadSerial();
 		if(serial==null) {

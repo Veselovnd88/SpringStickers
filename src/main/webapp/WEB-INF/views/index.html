@@ -54,8 +54,9 @@
   <input type="submit" value="Открыть папку">
 </form>
 <br>
-<p th:text="'Информация: '+ ${dto.getMessage()}"></p>
-<br>
+<p  th:each="pos,lbl :${map}" >
+  <p th:text="${pos}"></p>
+</p>
 <p>Добавлены следующие позиции </p>
 </body>
 </html>
