@@ -1,6 +1,8 @@
 package ru.veselov.springstickers.controllers;
 
 import org.springframework.stereotype.Component;
+import ru.veselov.springstickers.command.CommandExecutor;
+import ru.veselov.springstickers.command.Operation;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.MainModelLabel;
 import ru.veselov.springstickers.model.ModelLabel;
@@ -14,22 +16,22 @@ public class LabelController implements ControllerInt{
     }
     @Override
     public int onGetArt() throws InterruptOperationException {
-        return 0;
+        return 0;// not used
     }
 
     @Override
     public void onSave() throws InterruptOperationException {
-
+        CommandExecutor.execute(Operation.SAVE);
     }
 
     @Override
     public int onGetPos() throws InterruptOperationException {
-        return 0;
+        return 0;//not used
     }
 
     @Override
     public ModelLabel getModel() {
-        return null;
+        return this.modelLabel;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LabelController implements ControllerInt{
 
     @Override
     public String onReadSerial() throws InterruptOperationException {
-        return null;
+        return null;//not used
     }
 
     @Override
@@ -50,5 +52,10 @@ public class LabelController implements ControllerInt{
     @Override
     public boolean checkForRewriting() throws InterruptOperationException {
         return false;
+    }
+
+    @Override
+    public void onDelete() {
+
     }
 }

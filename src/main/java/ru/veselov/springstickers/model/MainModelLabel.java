@@ -1,6 +1,7 @@
 package ru.veselov.springstickers.model;
 
 
+import org.springframework.stereotype.Component;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 
 import java.util.Map;

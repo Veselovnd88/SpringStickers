@@ -14,4 +14,7 @@ public interface ControllerInt {
 	String onReadSerial() throws InterruptOperationException;
 	void sendMessage(String message);
 	boolean checkForRewriting() throws InterruptOperationException; //метод проверяет есть ли в мапе эта позиция или нет и перезаписывает
+
+
+	void onDelete();
 }

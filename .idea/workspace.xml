@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/EAC.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/adz.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/reestr.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="dto for position and article">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/rewrite.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/ControllerInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/ControllerInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/LabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/LabelController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/MainModelLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/MainModelLabel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -43,6 +44,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -141,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658862720360</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="dto for position and article">
+      <created>1658920947328</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1658920947328</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -157,6 +166,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="css" />
-    <option name="LAST_COMMIT_MESSAGE" value="css" />
+    <MESSAGE value="dto for position and article" />
+    <option name="LAST_COMMIT_MESSAGE" value="dto for position and article" />
   </component>
 </project>

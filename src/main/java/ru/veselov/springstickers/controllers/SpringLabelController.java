@@ -20,6 +20,9 @@ public class SpringLabelController {
     @GetMapping()
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto){
+
+
+
         return "/index";
     }
 
@@ -28,10 +31,21 @@ public class SpringLabelController {
     //нужно посто получить значения позиции и артикула
     public String getData(@ModelAttribute("dto") DTO dto){
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
-        System.out.println(dto.getArt()+"++"+dto.getPos());
+        controllerInt.getModel().setArt(dto.getArt());
+        controllerInt.getModel().setPos(dto.getPos());
+        if(dto.getTask().equals("Разместить")){
+
+        }
+        else if(dto.getTask().equals("Удалить")){
+            controllerInt.onDelete();
+        }
 
 
         return "redirect:/";
+    }
+    @GetMapping("/rewrite")
+    public String rewrite(){
+        return "redirect:/rewrite";
     }
 
 }
