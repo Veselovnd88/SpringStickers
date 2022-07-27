@@ -12,6 +12,8 @@ public interface ModelLabel {
 	int getPos();
 	void setArt(int art);
 	void setPos(int pos);
+	void setSerial(String serial);
+	String getSerial();
 	
 
 }

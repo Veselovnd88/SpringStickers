@@ -12,7 +12,7 @@ public interface ControllerInt {
 	ModelLabel getModel();
 	boolean onYesOrNo() throws InterruptOperationException;;
 	String onReadSerial() throws InterruptOperationException;
-	void sendMessage(String message);
+	String sendMessage(String message);
 	boolean checkForRewriting() throws InterruptOperationException; //метод проверяет есть ли в мапе эта позиция или нет и перезаписывает
 
 

@@ -4,7 +4,7 @@ public class DTO {
 
     private int pos=1;
     private int art=1;
-    private String serial;
+    private String serial="";
     private String message="Пока ничего не добавлено";
 
 

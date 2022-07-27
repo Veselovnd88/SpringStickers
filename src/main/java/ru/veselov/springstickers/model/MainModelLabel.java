@@ -14,6 +14,7 @@ public class MainModelLabel implements ModelLabel {
 	
 	private final Map<Integer, LabelSticker> posLabels = new TreeMap<>();
 	private final Paper paper = new Paper();//тут логика размещения этикеток на листе
+	private String serial;
 
 
 	@Override
@@ -44,6 +45,17 @@ public class MainModelLabel implements ModelLabel {
 	public void setPos(int pos) {
 		this.pos = pos;
 	}
+
+	@Override
+	public void setSerial(String serial) {
+		this.serial = serial;
+	}
+
+	@Override
+	public String getSerial() {
+		return this.serial;
+	}
+
 	@Override
 	public int getArt() {
 		return art;

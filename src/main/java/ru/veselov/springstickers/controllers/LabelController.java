@@ -11,8 +11,11 @@ import ru.veselov.springstickers.model.ModelLabel;
 public class LabelController implements ControllerInt{
     ModelLabel modelLabel;
 
+
     public LabelController(){
         this.modelLabel=new MainModelLabel();
+        CommandExecutor.init(this);
+
     }
     @Override
     public int onGetArt() throws InterruptOperationException {
@@ -41,17 +44,18 @@ public class LabelController implements ControllerInt{
 
     @Override
     public String onReadSerial() throws InterruptOperationException {
-        return null;//not used
+
+        return modelLabel.getSerial();
     }
 
     @Override
-    public void sendMessage(String message) {
-
+    public String sendMessage(String message) {
+        return message;
     }
 
     @Override
     public boolean checkForRewriting() throws InterruptOperationException {
-        return false;
+        return true;
     }
 
     @Override
