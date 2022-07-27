@@ -28,17 +28,9 @@ public class SpringLabelController {
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model){
         Map<Integer,LabelSticker> map = controllerInt.getModel().getMap();
+        //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
         System.out.println(map);
         model.addAttribute("map",map);
-        if(!map.isEmpty()){
-            StringBuilder sb = new StringBuilder("Размещены позиции");
-            for(Map.Entry<Integer,LabelSticker> entry: map.entrySet()){
-                sb.append(String.format("Позиция %d Датчик %s на %s с номером %s",
-                        entry.getKey(),entry.getValue().getName(),
-                        entry.getValue().getRange(),
-                        entry.getValue().getSerial()));
-            }
-        dto.setMessage(sb.toString());}
         return "/index";
     }
 
@@ -50,9 +42,9 @@ public class SpringLabelController {
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
         controllerInt.getModel().setSerial(dto.getSerial());
-        System.out.println(controllerInt.getModel());
-        System.out.println(controllerInt.getModel().getArt());
-        System.out.println(dto.getArt()+"|||"+dto.getPos());
+        System.out.println(controllerInt.getModel());//FIXME
+        System.out.println(controllerInt.getModel().getArt());//FIXME
+        System.out.println(dto.getArt()+"|||"+dto.getPos());//FIXME
         switch (dto.getTask()) {
             case "Разместить":
                 CommandExecutor.execute(Operation.CHOOSE);

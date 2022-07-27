@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658936224842</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Each: thymeleaf done">
+      <created>1658947149667</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1658947149667</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
