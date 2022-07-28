@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.veselov.springstickers.command.CommandExecutor;
 import ru.veselov.springstickers.command.Operation;
@@ -14,6 +15,7 @@ import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.DTO;
 import ru.veselov.springstickers.model.LabelSticker;
 
+import javax.validation.Valid;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Map;
@@ -41,7 +43,8 @@ public class SpringLabelController {
     @PostMapping(params = "place")//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
     //для дальнейшего заполнения.Так как этикетка создается из фабричного метода, создавать ее спрингом не надо
     //нужно посто получить значения позиции и артикула
-    public String getData(@ModelAttribute("dto") DTO dto) throws InterruptOperationException {
+    public String getData(@ModelAttribute("dto") @Valid DTO dto,
+                          BindingResult bindingResult) throws InterruptOperationException {
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
