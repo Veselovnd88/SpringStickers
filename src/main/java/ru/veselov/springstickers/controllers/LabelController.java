@@ -8,7 +8,8 @@ import ru.veselov.springstickers.model.MainModelLabel;
 import ru.veselov.springstickers.model.ModelLabel;
 
 @Component
-public class LabelController implements ControllerInt{
+public class LabelController implements ControllerInt{//вот это должно помещаться в новый тред
+    //при гет запросе вся это история должна создаваться в новом треде
     ModelLabel modelLabel;
 
 
@@ -59,7 +60,7 @@ public class LabelController implements ControllerInt{
     }
 
     @Override
-    public void onDelete() {
-
+    public void onDelete(int pos) {
+        getModel().getMap().remove(pos);
     }
 }

@@ -1,9 +1,10 @@
 package ru.veselov.springstickers.model;
 
 
-import org.springframework.stereotype.Component;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,12 +31,16 @@ public class MainModelLabel implements ModelLabel {
 	}
 
 	@Override
-	public void save(String directory) throws InterruptOperationException {
+	public File save(String directory) throws InterruptOperationException {
 		
 
 		paper.placeAll(posLabels);
-		paper.save(directory);
-		
+		try {
+			 return paper.saveWeb();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 	@Override
 	public int getPos() {

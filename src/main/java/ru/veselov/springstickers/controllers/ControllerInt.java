@@ -16,5 +16,5 @@ public interface ControllerInt {
 	boolean checkForRewriting() throws InterruptOperationException; //метод проверяет есть ли в мапе эта позиция или нет и перезаписывает
 
 
-	void onDelete();
+	void onDelete(int pos);
 }

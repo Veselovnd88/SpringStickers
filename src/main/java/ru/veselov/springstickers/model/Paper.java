@@ -81,8 +81,17 @@ public class Paper {
 			
 		}
 	}
-	
-	
+	public File saveWeb() throws IOException {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss-");
+		Date date = new Date();
+		String timeStamp = formatter.format(date);
+		BufferedImage bi = (BufferedImage) myImage;
+		Path temp = Files.createTempFile(timeStamp,".jpg");
+		ImageIO.write(bi,"jpg",temp.toFile());
+		return temp.toFile();
+	}
+
 	public void save(String directory) throws InterruptOperationException {
 	//	String windows = "c:\\StickersADZ";
 		//String linux = "/home/nikolay/StickersADZ";
@@ -101,7 +110,8 @@ public class Paper {
 					file = Files.createFile(file);
 				}
 				
-				BufferedImage bi = (BufferedImage) myImage;	
+				BufferedImage bi = (BufferedImage) myImage;
+
 				ImageIO.write(bi, "jpg", file.toFile());}
 		} catch (IOException e1) {
 			e1.printStackTrace();

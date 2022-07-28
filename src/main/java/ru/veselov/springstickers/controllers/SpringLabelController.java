@@ -1,18 +1,21 @@
 package ru.veselov.springstickers.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.veselov.springstickers.command.CommandExecutor;
 import ru.veselov.springstickers.command.Operation;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.DTO;
 import ru.veselov.springstickers.model.LabelSticker;
 
+import java.io.*;
+import java.nio.file.Files;
 import java.util.Map;
 
 @Controller
@@ -42,19 +45,13 @@ public class SpringLabelController {
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
         controllerInt.getModel().setSerial(dto.getSerial());
-        System.out.println(controllerInt.getModel());//FIXME
-        System.out.println(controllerInt.getModel().getArt());//FIXME
-        System.out.println(dto.getArt()+"|||"+dto.getPos());//FIXME
         switch (dto.getTask()) {
             case "Разместить":
                 CommandExecutor.execute(Operation.CHOOSE);
                 // System.out.println(controllerInt.getModel().getMap());
                 break;
             case "Удалить":
-                controllerInt.onDelete();
-                break;
-            case "Сохранить":
-                controllerInt.onSave();
+                controllerInt.onDelete(dto.getPos());
                 break;
         }
         return "redirect:/";
@@ -67,6 +64,23 @@ public class SpringLabelController {
     @GetMapping("/rewrite")
     public String rewrite(){
         return "/rewrite";
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<InputStreamResource> download() throws IOException, InterruptOperationException {
+
+        File generatedImage = controllerInt.getModel().save(null);
+
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
+
+        return ResponseEntity.ok()
+                // Content-Disposition
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())
+                // Content-Type
+                .contentType(MediaType.IMAGE_PNG)
+                // Contet-Length
+                .contentLength(generatedImage.length()) //
+                .body(resource);
     }
 
 }
