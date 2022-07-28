@@ -20,11 +20,11 @@
     <label for="1"> |20.11 1 MPa  </label>
 
     <input type="radio"  name="group1" th:field="*{art}" th:value="1" checked/>
-    <label for="2"> |20.11 0.6 MPa </label>
+    <label for="2"> |20.11 10 bar </label>
     <input type="radio" value="val2" name="group1"  th:field="*{art}" th:value="2"/>
-    <label for="3"> |20.11 10 bar </label>
+    <label for="3"> |20.11 6 bar </label>
     <input type="radio" value="val3" name="group1" th:field="*{art}" th:value="3"/>
-    <label for="4"> |20.11 6 bar </label>
+    <label for="4"> |20.11 0.6 MPa </label>
     <input type="radio" value="val4" name="group1" th:field="*{art}" th:value="4" />
   </div>
   <p>Выберите позицию для размещения</p>
@@ -41,8 +41,8 @@
       <label for="serial"> Серийный номер </label>
       <input type="text" th:field="*{serial}" id="serial"/>
       <br>
-          <input type="submit" style="width:200px;" value="Разместить" th:field="*{task}" th:value="Разместить" ></p>
-          <input type="submit" style="width:200px;" value="Удалить" th:field="*{task}" th:value="Удалить"></p>
+          <input type="submit" style="width:200px;" name="place" value="Разместить" th:field="*{task}" th:value="Разместить" ></p>
+          <input type="submit" style="width:200px;"  name="delete" value="Удалить" th:field="*{task}" th:value="Удалить"></p>
   </div>
 </form>
 <br>

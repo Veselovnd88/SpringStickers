@@ -30,6 +30,7 @@ public class SpringLabelController {
     @GetMapping()
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model){
+        //здесь как я понял можно испольщовать не отдельный объект, а обычную модель спринга
         Map<Integer,LabelSticker> map = controllerInt.getModel().getMap();
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
         System.out.println(map);
@@ -37,7 +38,7 @@ public class SpringLabelController {
         return "/index";
     }
 
-    @PostMapping()//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
+    @PostMapping(params = "place")//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
     //для дальнейшего заполнения.Так как этикетка создается из фабричного метода, создавать ее спрингом не надо
     //нужно посто получить значения позиции и артикула
     public String getData(@ModelAttribute("dto") DTO dto) throws InterruptOperationException {
@@ -45,27 +46,24 @@ public class SpringLabelController {
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
         controllerInt.getModel().setSerial(dto.getSerial());
+        System.out.println(dto.getTask());
         switch (dto.getTask()) {
             case "Разместить":
                 CommandExecutor.execute(Operation.CHOOSE);
                 // System.out.println(controllerInt.getModel().getMap());
                 break;
             case "Удалить":
+                System.out.println("я здесь");
                 controllerInt.onDelete(dto.getPos());
                 break;
         }
         return "redirect:/";
     }
-
-
-
-
-
-    @GetMapping("/rewrite")
-    public String rewrite(){
-        return "/rewrite";
+    @PostMapping(params = "delete")
+    public String delete(@ModelAttribute("dto") DTO dto){
+        controllerInt.onDelete(dto.getPos());
+        return "redirect:/";
     }
-
     @GetMapping("/download")
     public ResponseEntity<InputStreamResource> download() throws IOException, InterruptOperationException {
 
