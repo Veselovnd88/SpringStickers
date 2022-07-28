@@ -60,6 +60,7 @@ public class SpringLabelController {
         return "redirect:/";
     }
     @PostMapping(params = "delete")
+    //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
     public String delete(@ModelAttribute("dto") DTO dto){
         controllerInt.onDelete(dto.getPos());
         return "redirect:/";
