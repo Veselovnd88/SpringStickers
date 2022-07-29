@@ -1,5 +1,6 @@
 package ru.veselov.springstickers.controllers;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.veselov.springstickers.command.CommandExecutor;
 import ru.veselov.springstickers.command.Operation;
