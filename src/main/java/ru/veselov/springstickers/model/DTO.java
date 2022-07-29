@@ -1,21 +1,15 @@
 package ru.veselov.springstickers.model;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 //класс для передачи из формы в контроллер данных о позиции и артикулу
 public class DTO {
-    @NotEmpty
-    @Min(value=1)
-    @Max(value=12)
+
     private int pos=1;
-    @NotEmpty
-    @Min(value = 1)
-    @Max(value =4)
+
     private int art=1;
-    @NotEmpty
+    @NotEmpty(message = "Поле не может быть пустым")
     @Size(min=2,max=13,message = "Серийный номер должен быть от 2 до 13 цифр")
     private String serial;
     private String message="Пока ничего не добавлено";

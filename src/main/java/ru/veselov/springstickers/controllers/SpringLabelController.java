@@ -43,9 +43,15 @@ public class SpringLabelController {
     @PostMapping(params = "place")//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
     //для дальнейшего заполнения.Так как этикетка создается из фабричного метода, создавать ее спрингом не надо
     //нужно посто получить значения позиции и артикула
-    public String getData(@ModelAttribute("dto") @Valid DTO dto,
-                          BindingResult bindingResult) throws InterruptOperationException {
+    public String getData(  @ModelAttribute("dto") @Valid  DTO dto,
+                          BindingResult bindingResult) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
+        if(bindingResult.hasErrors()){
+            System.out.println("Нашел ошибки");
+            return "/index";//если поля не прошли валидацию - возвращает ту же страницу
+            //тут должен был быть не редирект, а ссылка на первую страницу представления
+            //теперь надо написать в таймлифе эти ошибки
+        }
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
         controllerInt.getModel().setSerial(dto.getSerial());
@@ -69,12 +75,12 @@ public class SpringLabelController {
         return "redirect:/";
     }
     @GetMapping("/download")
-    public ResponseEntity<InputStreamResource> download() throws IOException, InterruptOperationException {
+    public ResponseEntity<InputStreamResource> download(Model model) throws IOException, InterruptOperationException {
 
         File generatedImage = controllerInt.getModel().save(null);
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
-
+        model.addAttribute("filename",generatedImage.getName());
         return ResponseEntity.ok()
                 // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())

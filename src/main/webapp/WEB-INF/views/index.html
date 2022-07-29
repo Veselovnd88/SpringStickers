@@ -40,6 +40,7 @@
       <br>
       <label for="serial"> Серийный номер </label>
       <input type="text" th:field="*{serial}" id="serial"/>
+      <div style="color:red" th:if="${#fields.hasErrors('serial')}" th:errors="*{serial}">  Serial number Error </div>
       <br>
           <input type="submit" style="width:200px;" name="place" value="Разместить" th:field="*{task}" th:value="Разместить" ></p>
           <input type="submit" style="width:200px;"  name="delete" value="Удалить" th:field="*{task}" th:value="Удалить"></p>

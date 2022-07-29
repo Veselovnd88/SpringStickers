@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="комментарии">
+    <list default="true" id="d0323c96-df99-4395-a175-d07a0bd41264" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/download.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/controllers/SpringLabelController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/veselov/springstickers/model/DTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
