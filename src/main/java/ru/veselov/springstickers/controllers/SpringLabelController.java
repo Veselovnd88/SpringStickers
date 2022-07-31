@@ -45,7 +45,7 @@ public class SpringLabelController {
     * place. Далее исходя из значение позиции выбирает артикул и добавляет в мапу*/
     public String getData(@ModelAttribute("dto") @Valid  DTO dto,Model model,
                           BindingResult bindingResult,
-                          @ModelAttribute("map") Map<Integer,LabelSticker> map) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
+                          @ModelAttribute("map") Map<Integer,LabelSticker> map) {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
         if(bindingResult.hasErrors()){
             System.out.println("Нашел ошибки");
@@ -77,10 +77,10 @@ public class SpringLabelController {
                     range = "0.6 MPa    0.5...5V";
                     pinout = "1+, 2-, 3 Out, 4 Gehause";
                 }
-
-                LabelSticker lab = LabelFactory.getLabel(name,range,pinout,dto.getSerial());
-                map.put(dto.getPos(),lab);
-                model.addAttribute("map",map);//запись в модель - для таймлифа
+        LabelSticker lab = LabelFactory.getLabel(name,range,pinout,dto.getSerial());
+                if(map!=null){
+                map.put(dto.getPos(),lab);}
+        model.addAttribute("map",map);//запись в модель - для таймлифа
         return "/index";
     }
     @PostMapping(params = "delete")
