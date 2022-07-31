@@ -54,7 +54,7 @@ public class ChooseArt implements Command {
 		}
 
 			LabelSticker lab = LabelFactory.getLabel(name,range,pinout,serial);
-			controller.getModel().getMap().put(pos, lab);	
+			controller.getModel().getMap().put(pos, lab);
 			//controller.sendMessage(String.format("Размещена позиция %s %s %s"//output to chosen source
 				//	,pos, map.get(pos).getName(), map.get(pos).getSerial()));
 	}

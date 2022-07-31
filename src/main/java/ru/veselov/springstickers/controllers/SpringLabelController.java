@@ -17,6 +17,8 @@ import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.DTO;
 import ru.veselov.springstickers.model.LabelSticker;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
@@ -24,16 +26,23 @@ import java.nio.file.Files;
 import java.util.Map;
 
 @Controller
-@Scope("session")
+@SessionAttributes("controller")
 @RequestMapping("/")
 
 public class SpringLabelController {
-    private ControllerInt controllerInt= new LabelController();//сюда все равно кладутся разные, при каждом новом запросе
+  //  private ControllerInt controllerInt;//сюда все равно кладутся разные, при каждом новом запросе
+
+    @ModelAttribute("controller")
+    public ControllerInt getController(){
+        return new LabelController();
+    }
     @GetMapping()
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model,
-                        HttpSession session
+                        @ModelAttribute("controller") ControllerInt controllerInt
                         ) {
+
+        System.out.println(controllerInt);
 
         //session.setAttribute("controller",controllerInt);
         //LabelController controllerInt = (LabelController) model.getAttribute("controller");
@@ -50,8 +59,8 @@ public class SpringLabelController {
     //для дальнейшего заполнения.Так как этикетка создается из фабричного метода, создавать ее спрингом не надо
     //нужно посто получить значения позиции и артикула
     public String getData(@ModelAttribute("dto") @Valid  DTO dto,Model model,
-                          HttpSession session,
-                          BindingResult bindingResult) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
+                          BindingResult bindingResult,
+                          @ModelAttribute("controller") ControllerInt controllerInt) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
         if(bindingResult.hasErrors()){
             System.out.println("Нашел ошибки");
@@ -63,13 +72,13 @@ public class SpringLabelController {
         System.out.println("POST: " +controllerInt);
         controllerInt.getModel().setArt(dto.getArt());
         controllerInt.getModel().setPos(dto.getPos());
+        System.out.println(controllerInt.getModel()+" Модель");
         controllerInt.getModel().setSerial(dto.getSerial());
         System.out.println(dto.getTask());
         switch (dto.getTask()) {
             case "Разместить":
                 CommandExecutor.execute(Operation.CHOOSE);
                 model.addAttribute("map",controllerInt.getModel().getMap());
-                System.out.println(model.getAttribute("map"));
                 break;
             case "Удалить":
                 System.out.println("я здесь");
@@ -80,12 +89,13 @@ public class SpringLabelController {
     @PostMapping(params = "delete")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
     public String delete(@ModelAttribute("dto") DTO dto){
-        controllerInt.onDelete(dto.getPos());
+        //controllerInt.onDelete(dto.getPos());
         return "/index";
     }
     @GetMapping("/download")
     public ResponseEntity<InputStreamResource> download(Model model) throws IOException, InterruptOperationException {
-       File generatedImage = controllerInt.getModel().save(null);
+       ControllerInt controllerInt=null;
+        File generatedImage = controllerInt.getModel().save(null);
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
         model.addAttribute("filename",generatedImage.getName());
