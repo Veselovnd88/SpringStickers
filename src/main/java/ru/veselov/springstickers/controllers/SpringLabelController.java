@@ -43,8 +43,8 @@ public class SpringLabelController {
     //для дальнейшего заполнения.
     /*Метод через пост запрос забирает значения полей, срабатывает при клике на сабмит с именем
     * place. Далее исходя из значение позиции выбирает артикул и добавляет в мапу*/
-    public String getData(@ModelAttribute("dto") @Valid  DTO dto,Model model,
-                          BindingResult bindingResult,
+    public String getData(@ModelAttribute("dto") @Valid DTO dto,
+                          BindingResult bindingResult, Model model,
                           @ModelAttribute("map") Map<Integer,LabelSticker> map) {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
         if(bindingResult.hasErrors()){
