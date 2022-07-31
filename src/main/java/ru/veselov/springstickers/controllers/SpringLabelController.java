@@ -1,7 +1,5 @@
 package ru.veselov.springstickers.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -10,57 +8,44 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.veselov.springstickers.command.CommandExecutor;
-import ru.veselov.springstickers.command.Operation;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.DTO;
+import ru.veselov.springstickers.model.LabelFactory;
 import ru.veselov.springstickers.model.LabelSticker;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.*;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
-@SessionAttributes("controller")
 @RequestMapping("/")
-
+@SessionAttributes("map")//атрибут который хранится в течение всей сессии
 public class SpringLabelController {
-  //  private ControllerInt controllerInt;//сюда все равно кладутся разные, при каждом новом запросе
-
-    @ModelAttribute("controller")
-    public ControllerInt getController(){
-        return new LabelController();
+    @ModelAttribute("map")//получение атрибута, без этого метода бросает ошибку
+    public Map<Integer,LabelSticker> getMap(){
+        return new TreeMap<>();
     }
     @GetMapping()
     //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model,
-                        @ModelAttribute("controller") ControllerInt controllerInt
+                        @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
-
-        System.out.println(controllerInt);
-
-        //session.setAttribute("controller",controllerInt);
-        //LabelController controllerInt = (LabelController) model.getAttribute("controller");
         //здесь как я понял можно испольщовать не отдельный объект, а обычную модель спринга
-        Map<Integer,LabelSticker> map = controllerInt.getModel().getMap();
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
-        System.out.println(map);
         model.addAttribute("map",map);
-        System.out.println("GET: "+ controllerInt);
         return "/index";
     }
 
     @PostMapping(params = "place")//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
-    //для дальнейшего заполнения.Так как этикетка создается из фабричного метода, создавать ее спрингом не надо
-    //нужно посто получить значения позиции и артикула
+    //для дальнейшего заполнения.
+    /*Метод через пост запрос забирает значения полей, срабатывает при клике на сабмит с именем
+    * place. Далее исходя из значение позиции выбирает артикул и добавляет в мапу*/
     public String getData(@ModelAttribute("dto") @Valid  DTO dto,Model model,
                           BindingResult bindingResult,
-                          @ModelAttribute("controller") ControllerInt controllerInt) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
+                          @ModelAttribute("map") Map<Integer,LabelSticker> map) throws InterruptOperationException {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
         if(bindingResult.hasErrors()){
             System.out.println("Нашел ошибки");
@@ -68,33 +53,48 @@ public class SpringLabelController {
             //тут должен был быть не редирект, а ссылка на первую страницу представления
             //теперь надо написать в таймлифе эти ошибки
         }
-        //ControllerInt controllerInt= (ControllerInt) session.getAttribute("controller");
-        System.out.println("POST: " +controllerInt);
-        controllerInt.getModel().setArt(dto.getArt());
-        controllerInt.getModel().setPos(dto.getPos());
-        System.out.println(controllerInt.getModel()+" Модель");
-        controllerInt.getModel().setSerial(dto.getSerial());
-        System.out.println(dto.getTask());
-        switch (dto.getTask()) {
-            case "Разместить":
-                CommandExecutor.execute(Operation.CHOOSE);
-                model.addAttribute("map",controllerInt.getModel().getMap());
-                break;
-            case "Удалить":
-                System.out.println("я здесь");
-                break;
-        }
+        map= (Map<Integer, LabelSticker>) model.getAttribute("map");
+        int art= dto.getArt();
+                String name="";
+                String range="";
+                String pinout="";
+                if(art==1) {
+                    name = "ADZ-SML-20.11";
+                    range = "1 MPa    0.5...5V";
+                    pinout = "1+, 2-, 3 Out, 4 Gehause";}
+                if(art==2) {
+                    name = "ADZ-SML-20.11";
+                    range = "10 bar    0.5...5V";
+                    pinout = "1+, 2-, 3 Out, 4 Gehause";
+                }
+                if (art==3) {
+                    name = "ADZ-SML-20.11";
+                    range = "6 bar    0.5...5V";
+                    pinout = "3+, 2-, 1 Out";
+                }
+                if (art==4) {
+                    name = "ADZ-SML-20.11";
+                    range = "0.6 MPa    0.5...5V";
+                    pinout = "1+, 2-, 3 Out, 4 Gehause";
+                }
+
+                LabelSticker lab = LabelFactory.getLabel(name,range,pinout,dto.getSerial());
+                map.put(dto.getPos(),lab);
+                model.addAttribute("map",map);//запись в модель - для таймлифа
         return "/index";
     }
     @PostMapping(params = "delete")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
-    public String delete(@ModelAttribute("dto") DTO dto){
-        //controllerInt.onDelete(dto.getPos());
+    public String delete(@ModelAttribute("dto") DTO dto,
+                         @ModelAttribute("map") Map<Integer, LabelSticker> map){
+        map.remove(dto.getPos());
         return "/index";
     }
     @GetMapping("/download")
-    public ResponseEntity<InputStreamResource> download(Model model) throws IOException, InterruptOperationException {
-       ControllerInt controllerInt=null;
+    public ResponseEntity<InputStreamResource> download(Model model,
+              @ModelAttribute("map") Map<Integer,LabelSticker> map) throws IOException, InterruptOperationException {
+        ControllerInt controllerInt= new LabelController();
+        controllerInt.getModel().setMap((Map<Integer, LabelSticker>) model.getAttribute("map"));
         File generatedImage = controllerInt.getModel().save(null);
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
@@ -108,5 +108,4 @@ public class SpringLabelController {
                 .contentLength(generatedImage.length()) //
                 .body(resource);
     }
-
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface ModelLabel {
 	Map<Integer, LabelSticker> getMap();
+	void setMap(Map<Integer,LabelSticker> newMap);
 	Paper getPaper();
 	File save(String directory) throws InterruptOperationException;
 	int getArt();

@@ -13,7 +13,7 @@ public class MainModelLabel implements ModelLabel {
 	private int art;
 	
 	
-	private final Map<Integer, LabelSticker> posLabels = new TreeMap<>();
+	private  Map<Integer, LabelSticker> posLabels = new TreeMap<>();
 	private final Paper paper = new Paper();//тут логика размещения этикеток на листе
 	private String serial;
 
@@ -23,7 +23,9 @@ public class MainModelLabel implements ModelLabel {
 		return this.paper;
 	}
 	
-	
+	public void setMap(Map<Integer, LabelSticker> newMap){
+		this.posLabels=newMap;
+	}
 	
 	@Override
 	public Map<Integer, LabelSticker> getMap(){
