@@ -8,9 +8,8 @@ import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.MainModelLabel;
 import ru.veselov.springstickers.model.ModelLabel;
 
-@Component
-public class LabelController implements ControllerInt{//вот это должно помещаться в новый тред
-    //при гет запросе вся это история должна создаваться в новом треде
+//это не должно быть компонент
+public class LabelController implements ControllerInt{
     ModelLabel modelLabel;
 
 
