@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -47,9 +46,6 @@ public class SpringLabelController {
                         ) {
         //здесь как я понял можно испольщовать не отдельный объект, а обычную модель спринга
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
-        //List<LabelSticker> list =daOarticles.index();
-        System.out.println(list);
-        list.forEach(x-> System.out.println(x.getId()));
         model.addAttribute("list",list);//ниспадающий список вместо радиокнопок
         model.addAttribute("map",map);
         return "/index";
