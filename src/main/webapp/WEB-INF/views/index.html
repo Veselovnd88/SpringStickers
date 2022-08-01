@@ -16,16 +16,14 @@
   <div class="artGroup">
     Типы датчиков:
     <br>
-
-    <label for="1"> |20.11 1 MPa  </label>
-
-    <input type="radio"  name="group1" th:field="*{art}" th:value="1" checked/>
-    <label for="2"> |20.11 10 bar </label>
-    <input type="radio" value="val2" name="group1"  th:field="*{art}" th:value="2"/>
-    <label for="3"> |20.11 6 bar </label>
-    <input type="radio" value="val3" name="group1" th:field="*{art}" th:value="3"/>
-    <label for="4"> |20.11 0.6 MPa </label>
-    <input type="radio" value="val4" name="group1" th:field="*{art}" th:value="4" />
+    <p><select th:field="*{art}">
+      <!--цикл для пунктов списка-->
+      <option th:each="lbl : ${list}"
+              th:value="${lbl.getId()}"
+              th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}">
+        <!-- th:field-->
+      </option>
+    </select>
   </div>
   <p>Выберите позицию для размещения</p>
   <div class="positions">

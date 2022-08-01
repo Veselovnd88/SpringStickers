@@ -25,8 +25,11 @@ public class LabelSticker extends AbstractLabel{
 		this.bufferedImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		this.g = this.bufferedImage.getGraphics();
 	    this.g.fillRect(0, 0, WIDTH, HEIGHT);
-		
-		
+	}
+	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
+		this(name,range,pinout,serial);
+		this.MANUFACTURER=manufacturer;
+		this.id=id;
 	}
 	
 	public void addSigns() {
@@ -74,5 +77,10 @@ public class LabelSticker extends AbstractLabel{
 	public String getRange() {
 		return this.range;
 	}
-
+	public int getId(){
+		return this.id;
+	}
+	public String getPinout(){
+		return this.pinout;
+	}
 }
