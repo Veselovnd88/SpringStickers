@@ -17,4 +17,9 @@ public class DAOarticles {
         //LabelMapper - заполняет объекты стикеров заполненных из базы и заполняет лист
         return jdbcTemplate.query("SELECT*FROM articles", new LabelMapper());
     }
+    public void addSerials(LabelSticker label){
+        jdbcTemplate.update("INSERT INTO serials(serial_num, art) values(?,?)",
+                label.getSerial(),label.getId());
+
+    }
 }
