@@ -13,66 +13,24 @@ public class MainModelLabel implements ModelLabel {
 	private int art;
 	
 	
-	private  Map<Integer, LabelSticker> posLabels = new TreeMap<>();
+	private  Map<Integer, LabelSticker> posLabels = new TreeMap<>();//мапа в которой хранится #Позиции: этикетка
 	private final Paper paper = new Paper();//тут логика размещения этикеток на листе
 	private String serial;
 
 
-	@Override
-	public Paper getPaper() {
-		return this.paper;
-	}
-	
 	public void setMap(Map<Integer, LabelSticker> newMap){
 		this.posLabels=newMap;
-	}
-	
-	@Override
-	public Map<Integer, LabelSticker> getMap(){
-		return posLabels;
 	}
 
 	@Override
 	public File save(String directory) throws InterruptOperationException {
-		
-
+		//сохранение в файл для последующей отправки пользщователю
 		paper.placeAll(posLabels);
 		try {
 			 return paper.saveWeb();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
-	@Override
-	public int getPos() {
-		return pos;
-	}
-	@Override
-	public void setPos(int pos) {
-		this.pos = pos;
-	}
-
-	@Override
-	public void setSerial(String serial) {
-		this.serial = serial;
-	}
-
-	@Override
-	public String getSerial() {
-		return this.serial;
-	}
-
-	@Override
-	public int getArt() {
-		return art;
-	}
-	@Override
-	public void setArt(int art) {
-		this.art = art;
-	}
-
-	
-
 
 }

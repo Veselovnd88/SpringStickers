@@ -10,7 +10,7 @@ public class DTO {
 
     private int art=1;
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min=2,max=13,message = "Серийный номер должен быть от 2 до 13 цифр")
+    @Size(min=2,max=15,message = "Серийный номер должен быть от 2 до 15 цифр")
     private String serial;
     private String message="Пока ничего не добавлено";
 

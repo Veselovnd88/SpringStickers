@@ -24,8 +24,8 @@ public class Paper {
 	
 	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
 		
-	private BufferedImage myImage;
-	private Graphics g;
+	private final BufferedImage myImage;
+	private final Graphics g;
 
 	
 	static {//статик блок для инициализации координатами мапы
@@ -34,23 +34,23 @@ public class Paper {
 			if(i<5) {
 				coordinates.get(i).add(LABELHEIGHT);
 				if(i==1) {
-				coordinates.get(i).add((LEFTEDGE+(i-1)*LABELWIDTH));}//59 расстояние от левого края
+					coordinates.get(i).add((LEFTEDGE));}//59 расстояние от левого края
 				else {
 					coordinates.get(i).add(16*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
 				}					
 			}
-			else if(i>=5&& i<9) {
+			else if(i<9) {
 				coordinates.get(i).add(LABELHEIGHT*2);
 				if(i==5) {
-				coordinates.get(i).add((LEFTEDGE+(i-5)*LABELWIDTH));}
+					coordinates.get(i).add((LEFTEDGE));}
 				else {
 					coordinates.get(i).add(16*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
 				}	
 			}
-			else if(i>=9&& i<13) {
+			else {
 				coordinates.get(i).add(LABELHEIGHT*3);
 				if(i==9) {
-				coordinates.get(i).add((LEFTEDGE+(i-9)*LABELWIDTH));}
+					coordinates.get(i).add((LEFTEDGE));}
 				else {
 					coordinates.get(i).add(16*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
 				}	
@@ -61,7 +61,7 @@ public class Paper {
 	}
 	
 	public Paper() {
-		myImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
+		myImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
 		g = myImage.getGraphics();
 	    g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -82,7 +82,6 @@ public class Paper {
 		}
 	}
 	public File saveWeb() throws IOException {
-
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss-");
 		Date date = new Date();
 		String timeStamp = formatter.format(date);
@@ -92,40 +91,5 @@ public class Paper {
 		return temp.toFile();
 	}
 
-	public void save(String directory) throws InterruptOperationException {
-	//	String windows = "c:\\StickersADZ";
-		//String linux = "/home/nikolay/StickersADZ";
-		Path path = Path.of(directory);//("c:\\StickersADZ");
-		
-		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date date = new Date();
-		String timeStamp = formater.format(date);
-		Path file = Path.of(directory+"/_sticker_"+timeStamp+".jpg");
-		try {
-			if(!Files.exists(path)) {
-				System.out.println(path.getFileName());
-				Files.createDirectory(path);}
-			else {
-				if(!Files.exists(file)) {
-					file = Files.createFile(file);
-				}
-				
-				BufferedImage bi = (BufferedImage) myImage;
-
-				ImageIO.write(bi, "jpg", file.toFile());}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			throw new InterruptOperationException();
-		}
-	}
-
-
-
-	// сохранение в pdf
-	public void savePdf() {
-		File file = new File("src/controller/outfile/"+"paperPdf".
-				replace(' ', '_') + ".pdf");
-
-	}
 
 }

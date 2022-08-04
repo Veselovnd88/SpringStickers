@@ -27,15 +27,16 @@ import java.util.TreeMap;
 @RequestMapping("/")
 @SessionAttributes("map")//атрибут который хранится в течение всей сессии
 public class SpringLabelController {
-    private final DAOarticles daOarticles;
-    private final List<LabelSticker> list;
+    private final DAOarticles daOarticles;//дао потом будем пользоваться также для передачи номеров в общую базу
+    private final List<LabelSticker> list;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
     @Autowired
     public SpringLabelController(DAOarticles daOarticles) {
         this.daOarticles = daOarticles;
-        list = daOarticles.index();
+        this.list = daOarticles.index();
     }
 
-    @ModelAttribute("map")//получение атрибута, без этого метода бросает ошибку
+    @ModelAttribute("map")//получение атрибута Session atribute - который мы храним во время сессии дял всех методов
+    //эта мапа со всеми позициями  №Позиция=Этикета
     public Map<Integer,LabelSticker> getMap(){
         return new TreeMap<>();
     }
@@ -44,10 +45,10 @@ public class SpringLabelController {
     public String index(@ModelAttribute("dto") DTO dto, Model model,
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
-        //здесь как я понял можно испольщовать не отдельный объект, а обычную модель спринга
+        //если убрать из сигнатуры dto - сломается таймлиф
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
         model.addAttribute("list",list);//ниспадающий список вместо радиокнопок
-        model.addAttribute("map",map);
+        model.addAttribute("map",map);//добавили мапу, которая сешн атрибут
         return "/index";
     }
 
@@ -63,7 +64,6 @@ public class SpringLabelController {
         //для того чтобы он формировал форму через таймлиф нужно обязательно передавать сюда
         if(bindingResult.hasErrors()){
             System.out.println("Нашел ошибки");
-            System.out.println(list);
             return "/index";//если поля не прошли валидацию - возвращает ту же страницу
             //тут должен был быть не редирект, а ссылка на первую страницу представления
             //теперь надо написать в таймлифе эти ошибки
@@ -71,12 +71,12 @@ public class SpringLabelController {
         map= (Map<Integer, LabelSticker>) model.getAttribute("map");
         int art= dto.getArt();
         LabelSticker receivedLabel =list.stream().filter(x->x.getId()==art).findAny()
-                .orElse(new LabelSticker("Error","Error","Error","Error"));//FIXME - есть вдруг нулл то создавать
+                .orElse(new LabelSticker("Error","Error","Error","Error"));
         LabelSticker lab = LabelFactory.getLabel(
                 receivedLabel.getName(), receivedLabel.getRange(),
                 receivedLabel.getPinout(), dto.getSerial());
                 if(map!=null){
-                map.put(dto.getPos(),lab);}
+                    map.put(dto.getPos(),lab);}
         model.addAttribute("map",map);//запись в модель - для таймлифа
         return "/index";
     }
