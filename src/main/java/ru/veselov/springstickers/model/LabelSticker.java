@@ -11,8 +11,8 @@ import javax.imageio.ImageIO;
 public class LabelSticker extends AbstractLabel{
 	//TODO - увеличить DPI
 	
-	protected static final int WIDTH = 270;//
-	protected static final int HEIGHT = 125;//
+	protected static final int WIDTH = 270;//ширина
+	protected static final int HEIGHT = 125;//высота
 	BufferedImage bufferedImage;
 	Graphics g;
 	

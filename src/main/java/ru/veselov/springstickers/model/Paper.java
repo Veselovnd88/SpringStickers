@@ -1,7 +1,5 @@
 package ru.veselov.springstickers.model;
 
-import ru.veselov.springstickers.exception.InterruptOperationException;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,12 +13,12 @@ import java.util.*;
 
 
 public class Paper {
-	private final int WIDTH = 1240 ;//размер взят для DPI 150
-	private final int HEIGHT = 1754 ;
+	private final int WIDTH = 1240 ;// ширина в пикселях, размер взят для DPI 150
+	private final int HEIGHT = 1754 ;//высота
 	
-	private final static int LABELWIDTH = LabelSticker.WIDTH;
-	private final static int LABELHEIGHT = LabelSticker.HEIGHT;
-	private static final int LEFTEDGE = 59;
+	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
+	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
+	private static final int LEFTEDGE = 59;//отступ слева от края листа
 	
 	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
 		
@@ -77,7 +75,7 @@ public class Paper {
 		for(Map.Entry<Integer, LabelSticker> entry: labels.entrySet()) {
 			int x = coordinates.get(entry.getKey()).get(1);
 			int y = coordinates.get(entry.getKey()).get(0);
-			draw(entry.getValue().createImage(),x,y );
+			draw(entry.getValue().createImage(),x,y );//размещение всех этикеток на листе
 			
 		}
 	}

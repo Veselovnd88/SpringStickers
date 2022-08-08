@@ -95,7 +95,7 @@ public class SpringLabelController {
         ControllerInt controllerInt= new LabelController();
         controllerInt.getModel().setMap((Map<Integer, LabelSticker>) model.getAttribute("map"));
         File generatedImage = controllerInt.getModel().save(null);
-
+        //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
         model.addAttribute("filename",generatedImage.getName());
         return ResponseEntity.ok()
