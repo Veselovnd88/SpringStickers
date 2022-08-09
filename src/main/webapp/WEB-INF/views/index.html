@@ -11,6 +11,8 @@
 <body>
 <h3> Добро пожаловать в программу для формирования файла с этикетками</h3>
 <p> Выберите номенклатуру</p>
+<a href="/show"> Все артикулы </a>
+
 <!--th:method - задает метод, th:action - задает адрес отправки метода-->
 <form th:method="POST" th:action="@{/}" th:object="${dto}">
   <div class="artGroup">
@@ -40,8 +42,8 @@
       <input type="text" th:field="*{serial}" id="serial"/>
       <div style="color:red" th:if="${#fields.hasErrors('serial')}" th:errors="*{serial}">  Serial number Error </div>
       <br>
-          <input type="submit" style="width:200px;" name="place" value="Разместить" th:field="*{task}" th:value="Разместить" ></p>
-          <input type="submit" style="width:200px;"  name="delete" value="Удалить" th:field="*{task}" th:value="Удалить"></p>
+          <input type="submit" style="width:200px;" name="place" value="Разместить"  th:value="Разместить" ></p>
+          <input type="submit" style="width:200px;"  name="delete" value="Удалить"  th:value="Удалить"></p>
   </div>
 </form>
 <br>

@@ -107,4 +107,10 @@ public class SpringLabelController {
                 .contentLength(generatedImage.length()) //
                 .body(resource);
     }
+    @GetMapping("/show")
+    public String show(Model model){
+
+        model.addAttribute("list",list);
+        return "/show";
+    }
 }
