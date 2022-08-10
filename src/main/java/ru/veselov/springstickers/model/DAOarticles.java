@@ -18,8 +18,8 @@ public class DAOarticles {
         return jdbcTemplate.query("SELECT*FROM articles", new LabelMapper());
     }
     public void addSerials(LabelSticker label){
-        jdbcTemplate.update("INSERT INTO serials(serial_num, art) values(?,?)",
-                label.getSerial(),label.getId());
+        jdbcTemplate.update("INSERT INTO serial_num(id, num) values(?,?)",
+                label.getId(),label.getSerial());
 
     }
 }
