@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -71,10 +72,10 @@ public class SpringLabelController {
         map= (Map<Integer, LabelSticker>) model.getAttribute("map");
         int art= dto.getArt();
         LabelSticker receivedLabel =list.stream().filter(x->x.getId()==art).findAny()
-                .orElse(new LabelSticker("Error","Error","Error","Error"));
+                .orElse(new LabelSticker("Error","Error","Error","Error","Error",-1));
         LabelSticker lab = LabelFactory.getLabel(
                 receivedLabel.getName(), receivedLabel.getRange(),
-                receivedLabel.getPinout(), dto.getSerial());
+                receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
                 if(map!=null){
                     map.put(dto.getPos(),lab);}
         model.addAttribute("map",map);//запись в модель - для таймлифа
@@ -98,6 +99,11 @@ public class SpringLabelController {
         //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
         model.addAttribute("filename",generatedImage.getName());
+        List<LabelSticker> serials= new ArrayList<>(map.values());
+
+        daOarticles.addSerials(serials);
+
+
         return ResponseEntity.ok()
                 // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())

@@ -80,13 +80,13 @@ public class Paper {
 		}
 	}
 	public File saveWeb() throws IOException {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss-");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss");//шаблон для указания даты
 		Date date = new Date();
 		String timeStamp = formatter.format(date);
 		BufferedImage bi = (BufferedImage) myImage;
-		Path temp = Files.createTempFile(timeStamp,".jpg");
-		ImageIO.write(bi,"jpg",temp.toFile());
-		return temp.toFile();
+		Path file = Files.createFile(Path.of("Sticker"+timeStamp+".jpg"));//имя файла Sticker+дата создания
+		ImageIO.write(bi,"jpg",file.toFile());//пишем в созданный файл
+		return file.toFile();
 	}
 
 

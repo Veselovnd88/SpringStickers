@@ -8,7 +8,7 @@ public abstract class AbstractLabel {
 	protected String range;
 	protected String pinout;
 	protected String serial;
-	protected String MANUFACTURER = "ADZ NAGANO GmbH";
+	protected String manufacturer = "ADZ NAGANO GmbH";
 	protected int id;
 	public abstract Image createImage();
 

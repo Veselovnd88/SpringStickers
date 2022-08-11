@@ -17,9 +17,12 @@ public class DAOarticles {
         //LabelMapper - заполняет объекты стикеров заполненных из базы и заполняет лист
         return jdbcTemplate.query("SELECT*FROM articles", new LabelMapper());
     }
-    public void addSerials(LabelSticker label){
-        jdbcTemplate.update("INSERT INTO serial_num(id, num) values(?,?)",
-                label.getId(),label.getSerial());
+    public void addSerials(List<LabelSticker> list){
+        for(LabelSticker l: list){
+            jdbcTemplate.update("INSERT INTO serial_num(id, num) values(?,?)",
+                    l.getId(), l.getSerial());
+        }
+
 
     }
 }

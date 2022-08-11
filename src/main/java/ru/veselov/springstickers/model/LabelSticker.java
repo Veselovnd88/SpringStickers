@@ -17,19 +17,16 @@ public class LabelSticker extends AbstractLabel{
 	Graphics g;
 	
 	
-	public LabelSticker(String name, String range, String pinout, String serial) {
+	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
 		this.name = name;
 		this.range = range;
 		this.pinout = pinout;
 		this.serial = serial;
+		this.manufacturer =manufacturer;
+		this.id=id;
 		this.bufferedImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		this.g = this.bufferedImage.getGraphics();
 	    this.g.fillRect(0, 0, WIDTH, HEIGHT);
-	}
-	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
-		this(name,range,pinout,serial);
-		this.MANUFACTURER=manufacturer;
-		this.id=id;
 	}
 	
 	public void addSigns() {
@@ -63,7 +60,7 @@ public class LabelSticker extends AbstractLabel{
 	      this.g.drawString("SN: "+serial, 80,93);//рисуем серийный номер
 	      this.g.setFont(stringBold);//устанавливаем жирный шрифт для рисования жирным
 	      this.g.drawString(name, 80,30);//рисуем имя
-	      this.g.drawString(super.MANUFACTURER, 80,115);//рисуем строку производителя
+	      this.g.drawString(super.manufacturer, 80,115);//рисуем строку производителя
 	      addSigns();//добавляем значки
 	      return this.bufferedImage;//возвращаем наше изображение
 	}
@@ -82,5 +79,9 @@ public class LabelSticker extends AbstractLabel{
 	}
 	public String getPinout(){
 		return this.pinout;
+	}
+
+	public String getManufacturer(){
+		return this.manufacturer;
 	}
 }
