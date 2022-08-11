@@ -32,7 +32,7 @@ public class SpringConfig implements WebMvcConfigurer {
         this.applicationContext = applicationContext;
         this.environment = environment;
     }
-
+    
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
