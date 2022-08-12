@@ -3,6 +3,7 @@ package ru.veselov.springstickers.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -101,10 +102,17 @@ public class SpringLabelController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<InputStreamResource> download(Model model,
+    public ResponseEntity<?> download(Model model,
               @ModelAttribute("map") Map<Integer,LabelSticker> map) throws IOException, InterruptOperationException {
         ControllerInt controllerInt= new LabelController();
-        controllerInt.getModel().setMap((Map<Integer, LabelSticker>) model.getAttribute("map"));
+        Map<Integer,LabelSticker> receivedMap = (Map<Integer,LabelSticker>)model.getAttribute("map");
+        if (receivedMap.isEmpty()){
+            String message = "Error\n"+
+                    "<a href=\"/\"> Go to the main page </a>";//посмотреть как правильно сформировать
+
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        controllerInt.getModel().setMap(receivedMap);
         File generatedImage = controllerInt.getModel().save(null);
         //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
         InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
