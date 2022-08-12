@@ -90,6 +90,16 @@ public class SpringLabelController {
         model.addAttribute("list",list);
         return "/index";
     }
+    @PostMapping(params = "reset")
+    //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
+    public String reset(@ModelAttribute("dto") DTO dto,
+                         Model model,
+                         @ModelAttribute("map") Map<Integer, LabelSticker> map){
+        map.clear();
+        model.addAttribute("list",list);
+        return "/index";
+    }
+
     @GetMapping("/download")
     public ResponseEntity<InputStreamResource> download(Model model,
               @ModelAttribute("map") Map<Integer,LabelSticker> map) throws IOException, InterruptOperationException {
@@ -102,8 +112,6 @@ public class SpringLabelController {
         List<LabelSticker> serials= new ArrayList<>(map.values());
 
         daOarticles.addSerials(serials);
-
-
         return ResponseEntity.ok()
                 // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())
