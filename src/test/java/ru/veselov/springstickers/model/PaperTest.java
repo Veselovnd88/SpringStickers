@@ -17,7 +17,7 @@ public class PaperTest {
     public void testSaveWeb() {
         try {
             Assert.assertTrue(paper.saveWeb().getName().endsWith(".jpg"));
-          //  Assert.assertNull(paper.saveWeb());
+            Assert.assertNotNull(paper.saveWeb());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
