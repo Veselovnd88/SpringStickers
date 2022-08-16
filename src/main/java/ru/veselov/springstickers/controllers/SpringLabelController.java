@@ -1,11 +1,6 @@
 package ru.veselov.springstickers.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +31,7 @@ public class SpringLabelController {
         this.list = daOarticles.index();
     }
 
-    @ModelAttribute("map")//получение атрибута Session atribute - который мы храним во время сессии дял всех методов
+    @ModelAttribute("map")//получение атрибута Session attribute - который мы храним во время сессии дял всех методов
     //эта мапа со всеми позициями  №Позиция=Этикета
     public Map<Integer,LabelSticker> getMap(){
         return new TreeMap<>();
@@ -101,12 +96,12 @@ public class SpringLabelController {
     }
 
     @RequestMapping("/download")
-    public void download(Model model,//ResponseEntity<?>
+    public void download(Model model,
                          @ModelAttribute("map") Map<Integer,LabelSticker> map,
                          HttpServletResponse response) throws IOException, InterruptOperationException {
         ControllerInt controllerInt= new LabelController();
         Map<Integer,LabelSticker> receivedMap = (Map<Integer,LabelSticker>)model.getAttribute("map");
-        if (receivedMap.isEmpty()){
+        if (receivedMap.isEmpty()){//проверяем мапу - если пустая то возвращаем информацию о том что ничего не добавлено
             String message = "Ничего не добавлено\n"+
                     "<a href=\"/\"> Перейти на главную страницу </a>";
             response.setContentType("text/html;charset=UTF-8");
@@ -125,23 +120,12 @@ public class SpringLabelController {
         response.setHeader("Content-disposition", "attachment; filename=" + generatedImage.getName());
         OutputStream out = response.getOutputStream();
         FileInputStream in = new FileInputStream(generatedImage);
-
         // copy from in to out
         in.transferTo(out);
         out.close();
         in.close();
         generatedImage.delete();
-/*
-        ResponseEntity<?> re = ResponseEntity.ok()
-                // Content-Disposition
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())
-                // Content-Type
-                .contentType(MediaType.IMAGE_PNG)
-                // Content-Length
-                .contentLength(generatedImage.length()).body(resource);
-*/
-
-
+        //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
     }
     @GetMapping("/show")
     public String show(Model model){
