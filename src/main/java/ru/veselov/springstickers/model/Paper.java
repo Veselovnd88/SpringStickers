@@ -19,7 +19,6 @@ public class Paper {
 	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
 	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
 	private static final int LEFTEDGE = 59;//отступ слева от края листа
-	
 	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
 		
 	private final BufferedImage myImage;
@@ -53,9 +52,7 @@ public class Paper {
 					coordinates.get(i).add(16*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
 				}	
 			}
-			
 		}
-		
 	}
 	
 	public Paper() {
@@ -66,7 +63,7 @@ public class Paper {
 	}
 
 	
-	public void draw(Image im,int x, int y) {//рисует переданный имейдж на поле
+	private void draw(Image im,int x, int y) {//рисует переданный имейдж на поле
 		g.drawImage(im, x, y, null);
 		
 	}
@@ -80,11 +77,13 @@ public class Paper {
 		}
 	}
 	public File saveWeb() throws IOException {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss");//шаблон для указания даты
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
 		Date date = new Date();
 		String timeStamp = formatter.format(date);
 		BufferedImage bi = (BufferedImage) myImage;
-		Path file = Files.createFile(Path.of("Sticker"+timeStamp+".jpg"));//имя файла Sticker+дата создания
+		Path file = Files.createFile(Path.of("Sticker_"+timeStamp+".jpg"));//имя файла Sticker+дата создания
+
 		ImageIO.write(bi,"jpg",file.toFile());//пишем в созданный файл
 		return file.toFile();
 	}
