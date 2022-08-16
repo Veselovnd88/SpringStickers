@@ -16,10 +16,9 @@ import ru.veselov.springstickers.model.DTO;
 import ru.veselov.springstickers.model.LabelFactory;
 import ru.veselov.springstickers.model.LabelSticker;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -101,33 +100,48 @@ public class SpringLabelController {
         return "/index";
     }
 
-    @GetMapping("/download")
-    public ResponseEntity<?> download(Model model,
-              @ModelAttribute("map") Map<Integer,LabelSticker> map) throws IOException, InterruptOperationException {
+    @RequestMapping("/download")
+    public void download(Model model,//ResponseEntity<?>
+                         @ModelAttribute("map") Map<Integer,LabelSticker> map,
+                         HttpServletResponse response) throws IOException, InterruptOperationException {
         ControllerInt controllerInt= new LabelController();
         Map<Integer,LabelSticker> receivedMap = (Map<Integer,LabelSticker>)model.getAttribute("map");
         if (receivedMap.isEmpty()){
-            String message = "Error\n"+
-                    "<a href=\"/\"> Go to the main page </a>";//посмотреть как правильно сформировать
-
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            String message = "Ничего не добавлено\n"+
+                    "<a href=\"/\"> Перейти на главную страницу </a>";
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter pw = response.getWriter();
+            pw.println(message);
+            return;
         }
         controllerInt.getModel().setMap(receivedMap);
         File generatedImage = controllerInt.getModel().save(null);
         //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
+       // InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
         model.addAttribute("filename",generatedImage.getName());
         List<LabelSticker> serials= new ArrayList<>(map.values());
-
         daOarticles.addSerials(serials);
-        return ResponseEntity.ok()
+        response.setContentType("image/jpg");
+        response.setHeader("Content-disposition", "attachment; filename=" + generatedImage.getName());
+        OutputStream out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(generatedImage);
+
+        // copy from in to out
+        in.transferTo(out);
+        out.close();
+        in.close();
+        generatedImage.delete();
+/*
+        ResponseEntity<?> re = ResponseEntity.ok()
                 // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + generatedImage.getName())
                 // Content-Type
                 .contentType(MediaType.IMAGE_PNG)
-                // Contet-Length
-                .contentLength(generatedImage.length()) //
-                .body(resource);
+                // Content-Length
+                .contentLength(generatedImage.length()).body(resource);
+*/
+
+
     }
     @GetMapping("/show")
     public String show(Model model){
