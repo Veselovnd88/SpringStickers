@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public class LabelSticker extends AbstractLabel{
 	//TODO - увеличить DPI
-	
+
 	protected static final int WIDTH = 270;//ширина
 	protected static final int HEIGHT = 125;//высота
 	BufferedImage bufferedImage;
@@ -39,9 +39,10 @@ public class LabelSticker extends AbstractLabel{
 				manuf = ImageIO.read(LabelSticker.class.getResourceAsStream("/adz.png"));
 
 			}
-			else if(manufacturer.equals("АЛЛ ИМПЕКС РУС")){
+			else{
 				manuf = ImageIO.read(LabelSticker.class.getResourceAsStream("/all-imp.png"));
 			}
+
 			g.drawImage(ros.getScaledInstance(40, 40, Image.SCALE_DEFAULT),230,75,null);
 			g.drawImage(eac.getScaledInstance(40, 40, Image.SCALE_DEFAULT), 230, 20, null);
 
@@ -50,19 +51,14 @@ public class LabelSticker extends AbstractLabel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 	}
+
 	@Override
 	public Image createImage() {
-	
 	      Font stringFont = new Font("Arial",Font.BOLD,13);//задаем стандартный шрифт
 	      Font stringBold = new Font("Arial",Font.BOLD,15);//задаем жирный шрифт
 	      this.g.setFont(stringFont);//установка обычного шрифта
 	      this.g.setColor(Color.black);//установка цвета шрифта
-
 	      this.g.drawString(range, 80,51);//рисуем диапазон
 	      this.g.drawString(pinout, 80,72);//рисуем распиновку
 	      this.g.drawString("SN: "+serial, 80,93);//рисуем серийный номер
