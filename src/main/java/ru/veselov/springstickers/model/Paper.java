@@ -3,18 +3,17 @@ package ru.veselov.springstickers.model;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 
 public class Paper {
-	private final int WIDTH = 1240 ;// ширина в пикселях, размер взят для DPI 150
-	private final int HEIGHT = 1754 ;//высота
-	
 	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
 	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
 	private static final int LEFTEDGE = 59;//отступ слева от края листа
@@ -55,27 +54,31 @@ public class Paper {
 	}
 	
 	public Paper() {
-		myImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
+		//высота
+		int HEIGHT = 1754;
+		// ширина в пикселях, размер взят для DPI 150
+		int WIDTH = 1240;
+		myImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
 		g = myImage.getGraphics();
 	    g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 
-	
-	private void draw(Image im,int x, int y) {//рисует переданный имейдж на поле
+	/*Метод размещает(рисует) переданную этикету по заданным координатам*/
+	private void drawLabel(Image im, int x, int y) {
 		g.drawImage(im, x, y, null);
-		
 	}
 	//метод размещает все этикетки по координатам и рисует на данном Image
-	public void placeAll(Map<Integer, LabelSticker> labels) {
+	private void drawAllImages(Map<Integer, LabelSticker> labels) {
 		for(Map.Entry<Integer, LabelSticker> entry: labels.entrySet()) {
 			int x = coordinates.get(entry.getKey()).get(1);
 			int y = coordinates.get(entry.getKey()).get(0);
-			draw(entry.getValue().createImage(),x,y );//размещение всех этикеток на листе
-			
+			drawLabel(entry.getValue().createImage(),x,y );//размещение всех этикеток на листе
 		}
 	}
-	public InputStream saveWeb() throws IOException {
+
+	public InputStream saveWeb(Map<Integer, LabelSticker> labels) throws IOException {
+		drawAllImages(labels);
 		ByteArrayOutputStream baos =new ByteArrayOutputStream();
 		ImageIO.write((BufferedImage) myImage,"jpg",baos);//пишем в созданный файл
 		return new ByteArrayInputStream(baos.toByteArray());

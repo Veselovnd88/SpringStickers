@@ -107,19 +107,15 @@ public class SpringLabelController {
             return;
         }
         controllerInt.getModel().setMap(receivedMap);
-        InputStream in = controllerInt.getModel().save(null);
-       // File generatedImage = controllerInt.getModel().save(null);
-        //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
+        InputStream in = controllerInt.getModel().save();
         List<LabelSticker> serials= new ArrayList<>(map.values());
         daOarticles.addSerials(serials);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();
         String timeStamp = formatter.format(date);
         response.setContentType("image/jpg");
-
-        response.setHeader("Content-disposition", "attachment; filename=" + timeStamp);
+        response.setHeader("Content-disposition", "attachment; filename=" + timeStamp+".jpg");
         OutputStream out = response.getOutputStream();
-        // copy from in to out
         in.transferTo(out);
         out.close();
         in.close();
