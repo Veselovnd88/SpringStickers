@@ -14,10 +14,8 @@ import ru.veselov.springstickers.model.LabelSticker;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -41,7 +39,6 @@ public class SpringLabelController {
     public String index(@ModelAttribute("dto") DTO dto, Model model,
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
-        //если убрать из сигнатуры dto - сломается таймлиф
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
         model.addAttribute("list",list);//ниспадающий список вместо радиокнопок
         model.addAttribute("map",map);//добавили мапу, которая сешн атрибут
@@ -73,7 +70,7 @@ public class SpringLabelController {
                 receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
                 if(map!=null){
                     map.put(dto.getPos(),lab);}
-        model.addAttribute("map",map);//запись в модель - для таймлифа
+        model.addAttribute("map",map);
         return "/index";
     }
     @PostMapping(params = "delete")
@@ -110,21 +107,22 @@ public class SpringLabelController {
             return;
         }
         controllerInt.getModel().setMap(receivedMap);
-        File generatedImage = controllerInt.getModel().save(null);
+        InputStream in = controllerInt.getModel().save(null);
+       // File generatedImage = controllerInt.getModel().save(null);
         //TODO здесь логирование с записью в какой нибудь файл словаря с позициями и информацией с этикеток
-       // InputStreamResource resource = new InputStreamResource(new FileInputStream(generatedImage));
-        model.addAttribute("filename",generatedImage.getName());
         List<LabelSticker> serials= new ArrayList<>(map.values());
         daOarticles.addSerials(serials);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
+        Date date = new Date();
+        String timeStamp = formatter.format(date);
         response.setContentType("image/jpg");
-        response.setHeader("Content-disposition", "attachment; filename=" + generatedImage.getName());
+
+        response.setHeader("Content-disposition", "attachment; filename=" + timeStamp);
         OutputStream out = response.getOutputStream();
-        FileInputStream in = new FileInputStream(generatedImage);
         // copy from in to out
         in.transferTo(out);
         out.close();
         in.close();
-        generatedImage.delete();
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
     }
     @GetMapping("/show")

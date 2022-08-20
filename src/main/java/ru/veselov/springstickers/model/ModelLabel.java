@@ -2,11 +2,11 @@ package ru.veselov.springstickers.model;
 
 import ru.veselov.springstickers.exception.InterruptOperationException;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 
 public interface ModelLabel {
 	void setMap(Map<Integer,LabelSticker> newMap);
 
-	File save(String directory) throws InterruptOperationException;
+	InputStream save(String directory) throws InterruptOperationException;
 }
