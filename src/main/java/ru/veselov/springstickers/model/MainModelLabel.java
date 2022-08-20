@@ -4,7 +4,9 @@ package ru.veselov.springstickers.model;
 import ru.veselov.springstickers.exception.InterruptOperationException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,7 +25,7 @@ public class MainModelLabel implements ModelLabel {
 	}
 
 	@Override
-	public File save(String directory) throws InterruptOperationException {
+	public InputStream save(String directory) throws InterruptOperationException {
 		//сохранение в файл для последующей отправки пользщователю
 		paper.placeAll(posLabels);
 		try {

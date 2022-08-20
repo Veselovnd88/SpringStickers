@@ -3,8 +3,7 @@ package ru.veselov.springstickers.model;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -76,16 +75,10 @@ public class Paper {
 			
 		}
 	}
-	public File saveWeb() throws IOException {
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
-		Date date = new Date();
-		String timeStamp = formatter.format(date);
-		BufferedImage bi = (BufferedImage) myImage;
-		Path file = Files.createFile(Path.of("Sticker_"+timeStamp+".jpg"));//имя файла Sticker+дата создания
-
-		ImageIO.write(bi,"jpg",file.toFile());//пишем в созданный файл
-		return file.toFile();
+	public InputStream saveWeb() throws IOException {
+		ByteArrayOutputStream baos =new ByteArrayOutputStream();
+		ImageIO.write((BufferedImage) myImage,"jpg",baos);//пишем в созданный файл
+		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
 
