@@ -114,7 +114,7 @@ public class SpringLabelController {
         Date date = new Date();
         String timeStamp = formatter.format(date);
         response.setContentType("image/jpg");
-        response.setHeader("Content-disposition", "attachment; filename=" + timeStamp);
+        response.setHeader("Content-disposition", "attachment; filename=" + timeStamp+".jpg");
         OutputStream out = response.getOutputStream();
         in.transferTo(out);
         out.close();
