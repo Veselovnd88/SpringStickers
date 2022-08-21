@@ -1,6 +1,5 @@
 package ru.veselov.springstickers.model;
 
-
 import ru.veselov.springstickers.exception.InterruptOperationException;
 import java.io.IOException;
 import java.io.InputStream;

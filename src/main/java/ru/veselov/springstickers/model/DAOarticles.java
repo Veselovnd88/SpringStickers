@@ -22,7 +22,5 @@ public class DAOarticles {
             jdbcTemplate.update("INSERT INTO serial_num(id, num) values(?,?)",
                     l.getId(), l.getSerial());
         }
-
-
     }
 }
