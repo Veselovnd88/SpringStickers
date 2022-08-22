@@ -1,0 +1,1 @@
+web: java -war target/stickers.war
