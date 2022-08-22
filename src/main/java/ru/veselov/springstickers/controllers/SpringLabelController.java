@@ -116,7 +116,16 @@ public class SpringLabelController {
         response.setContentType("image/jpg");
         response.setHeader("Content-disposition", "attachment; filename=" + timeStamp+".jpg");
         OutputStream out = response.getOutputStream();
-        in.transferTo(out);
+        try{
+            byte[] buf = new byte[8192];
+            int length;
+            while ((length = in.read(buf)) != -1) {
+                out.write(buf, 0, length);
+        }}
+        catch (IOException ignored){
+
+        }
+        //in.transferTo(out);
         out.close();
         in.close();
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
