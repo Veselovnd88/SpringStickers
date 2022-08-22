@@ -16,7 +16,8 @@ import java.util.Map;
 public class Paper {
 	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
 	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
-	private static final int LEFTEDGE = 59;//отступ слева от края листа
+	private static final int LEFTEDGE = 177;//отступ слева от края листа
+	private static final int BETWEEN=48;
 	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
 		
 	private final BufferedImage myImage;
@@ -31,7 +32,7 @@ public class Paper {
 				if(i==1) {
 					coordinates.get(i).add((LEFTEDGE));}//59 расстояние от левого края
 				else {
-					coordinates.get(i).add(16*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
+					coordinates.get(i).add(BETWEEN*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
 				}					
 			}
 			else if(i<9) {
@@ -39,7 +40,7 @@ public class Paper {
 				if(i==5) {
 					coordinates.get(i).add((LEFTEDGE));}
 				else {
-					coordinates.get(i).add(16*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
+					coordinates.get(i).add(BETWEEN*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
 				}	
 			}
 			else {
@@ -47,7 +48,7 @@ public class Paper {
 				if(i==9) {
 					coordinates.get(i).add((LEFTEDGE));}
 				else {
-					coordinates.get(i).add(16*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
+					coordinates.get(i).add(BETWEEN*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
 				}	
 			}
 		}
@@ -55,9 +56,9 @@ public class Paper {
 	
 	public Paper() {
 		//высота
-		int HEIGHT = 1754;
-		// ширина в пикселях, размер взят для DPI 150
-		int WIDTH = 1240;
+		int HEIGHT = 5262;
+		// ширина в пикселях, размер взят для DPI 450
+		int WIDTH = 3720;
 		myImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
 		g = myImage.getGraphics();
 	    g.setColor(Color.WHITE);
