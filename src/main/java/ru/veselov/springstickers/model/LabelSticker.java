@@ -55,12 +55,12 @@ public class LabelSticker extends AbstractLabel{
 
 	@Override
 	public Image createImage() {
-	      Font stringFont = new Font("TrueType",Font.BOLD,13);//задаем стандартный шрифт
-	      Font stringBold = new Font("TrueType",Font.BOLD,15);//задаем жирный шрифт
-			Font small = new Font("TrueType", Font.PLAIN,12);
+	      Font stringFont = new Font("Arial",Font.BOLD,13);//задаем стандартный шрифт
+	      Font stringBold = new Font("Arial",Font.BOLD,15);//задаем жирный шрифт
+		  //Font small = new Font("TrueType", Font.PLAIN,12);
 	      this.g.setFont(stringFont);//установка обычного шрифта
 	      this.g.setColor(Color.black);//установка цвета шрифта
-		  g.setFont(small);
+		  //g.setFont(small);
 	      this.g.drawString(range, 80,51);//рисуем диапазон
 		  g.setFont(stringFont);
 	      this.g.drawString(pinout, 80,72);//рисуем распиновку
