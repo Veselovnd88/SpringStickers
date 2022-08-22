@@ -62,9 +62,10 @@ public class LabelSticker extends AbstractLabel{
 	      this.g.drawString(range, 80,51);//рисуем диапазон
 	      this.g.drawString(pinout, 80,72);//рисуем распиновку
 	      this.g.drawString("SN: "+serial, 80,93);//рисуем серийный номер
+		  this.g.drawString(super.manufacturer, 80,115);//рисуем строку производителя
 	      this.g.setFont(stringBold);//устанавливаем жирный шрифт для рисования жирным
 	      this.g.drawString(name, 80,30);//рисуем имя
-	      this.g.drawString(super.manufacturer, 80,115);//рисуем строку производителя
+
 	      addSigns();//добавляем значки
 	      return this.bufferedImage;//возвращаем наше изображение
 	}
