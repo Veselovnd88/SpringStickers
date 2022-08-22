@@ -13,8 +13,8 @@ public class LabelSticker extends AbstractLabel{
 
 	protected static final int WIDTH = 270;//ширина
 	protected static final int HEIGHT = 125;//высота
-	BufferedImage bufferedImage;
-	Graphics g;
+	protected BufferedImage bufferedImage;
+	protected Graphics g;
 	
 	
 	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
@@ -29,7 +29,7 @@ public class LabelSticker extends AbstractLabel{
 	    this.g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 	
-	public void addSigns() {
+	private void addSigns() {
 		try {
 			
 			BufferedImage eac = ImageIO.read(LabelSticker.class.getResourceAsStream("/EAC.png"));
@@ -45,7 +45,6 @@ public class LabelSticker extends AbstractLabel{
 
 			g.drawImage(ros.getScaledInstance(40, 40, Image.SCALE_DEFAULT),230,75,null);
 			g.drawImage(eac.getScaledInstance(40, 40, Image.SCALE_DEFAULT), 230, 20, null);
-
 			g.drawImage(manuf.getScaledInstance(80, 80, Image.SCALE_SMOOTH),0,30 , null);
 	
 		} catch (IOException e) {
@@ -84,7 +83,6 @@ public class LabelSticker extends AbstractLabel{
 	public String getPinout(){
 		return this.pinout;
 	}
-
 	public String getManufacturer(){
 		return this.manufacturer;
 	}
