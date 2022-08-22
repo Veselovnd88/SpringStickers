@@ -1,1 +1,1 @@
-web: java -war target/stickers.war
+war:deploy target/stickers.war
