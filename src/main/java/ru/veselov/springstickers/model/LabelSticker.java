@@ -36,19 +36,16 @@ public class LabelSticker extends AbstractLabel{
 			BufferedImage manuf=null;
 			if(manufacturer.equals("ADZ NAGANO GmbH")){
 				manuf = ImageIO.read(LabelSticker.class.getResourceAsStream("/adz.png"));
-
 			}
 			else{
 				manuf = ImageIO.read(LabelSticker.class.getResourceAsStream("/all-imp.png"));
 			}
-
 			g.drawImage(ros.getScaledInstance(120, 120, Image.SCALE_DEFAULT),690,225,
 					null);
 			g.drawImage(eac.getScaledInstance(120, 120, Image.SCALE_DEFAULT), 690, 60,
 					null);
 			g.drawImage(manuf.getScaledInstance(240, 240, Image.SCALE_SMOOTH),0,90 ,
 					null);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
