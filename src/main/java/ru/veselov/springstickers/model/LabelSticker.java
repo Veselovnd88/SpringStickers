@@ -10,19 +10,14 @@ import javax.imageio.ImageIO;
 
 public class LabelSticker extends AbstractLabel{
 
-<<<<<<< HEAD
-	protected static final int WIDTH = 270;//ширина
-	protected static final int HEIGHT = 125;//высота
-	BufferedImage bufferedImage;
-	Graphics g;
-=======
+
 
 	protected static final int WIDTH = 810;//ширина
 	protected static final int HEIGHT = 375;//высота
 	protected BufferedImage bufferedImage;
 	protected Graphics g;
->>>>>>> b61930b... fix: increased resolution
-	
+
+
 	
 	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
 		this.name = name;
@@ -50,20 +45,15 @@ public class LabelSticker extends AbstractLabel{
 				manuf = ImageIO.read(LabelSticker.class.getResourceAsStream("/all-imp.png"));
 			}
 
-<<<<<<< HEAD
-			g.drawImage(ros.getScaledInstance(40, 40, Image.SCALE_DEFAULT),230,75,null);
-			g.drawImage(eac.getScaledInstance(40, 40, Image.SCALE_DEFAULT), 230, 20, null);
 
-			g.drawImage(manuf.getScaledInstance(80, 80, Image.SCALE_SMOOTH),0,30 , null);
-=======
 			g.drawImage(ros.getScaledInstance(120, 120, Image.SCALE_DEFAULT),690,225,
 					null);
 			g.drawImage(eac.getScaledInstance(120, 120, Image.SCALE_DEFAULT), 690, 60,
 					null);
 			g.drawImage(manuf.getScaledInstance(240, 240, Image.SCALE_SMOOTH),0,90 ,
 					null);
->>>>>>> b61930b... fix: increased resolution
-	
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,23 +61,7 @@ public class LabelSticker extends AbstractLabel{
 
 	@Override
 	public Image createImage() {
-<<<<<<< HEAD
-	      Font stringFont = new Font("Helvetica",Font.BOLD,13);//задаем стандартный шрифт
-	      Font stringBold = new Font("Helvetica",Font.BOLD,15);//задаем жирный шрифт
-		  //Font small = new Font("TrueType", Font.PLAIN,12);
-	      this.g.setFont(stringFont);//установка обычного шрифта
-	      this.g.setColor(Color.black);//установка цвета шрифта
-		  //g.setFont(small);
-	      this.g.drawString(range, 80,51);//рисуем диапазон
-		  g.setFont(stringFont);
-	      this.g.drawString(pinout, 80,72);//рисуем распиновку
-	      this.g.drawString("SN: "+serial, 80,93);//рисуем серийный номер
 
-	      this.g.setFont(stringBold);//устанавливаем жирный шрифт для рисования жирным
-			this.g.drawString(super.manufacturer, 80,115);//рисуем строку производителя
-	      this.g.drawString(name, 80,30);//рисуем имя
-
-=======
 	      Font stringFont = new Font("Arial",Font.BOLD,39);//задаем стандартный шрифт
 	      Font stringBold = new Font("Arial",Font.BOLD,45);//задаем жирный шрифт
 	      this.g.setFont(stringFont);//установка обычного шрифта
@@ -98,7 +72,6 @@ public class LabelSticker extends AbstractLabel{
 	      this.g.setFont(stringBold);//устанавливаем жирный шрифт для рисования жирным
 	      this.g.drawString(name, 240,90);//рисуем имя
 	      this.g.drawString(super.manufacturer, 240,345);//рисуем строку производителя
->>>>>>> b61930b... fix: increased resolution
 	      addSigns();//добавляем значки
 	      return this.bufferedImage;//возвращаем наше изображение
 	}
