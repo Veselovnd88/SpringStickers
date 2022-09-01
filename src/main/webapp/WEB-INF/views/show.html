@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <title>Все номенклатуры </title>
+  <link href="../resources/css/style.css"
+        th:href="@{/resources/css/style.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<p> Список артикулов </p>
+<div th:each = "lbl : ${list}">
+
+  <!--<a th:href="@{/people/{id}(id=${person.getId()})}"-->
+  <p th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}"> article</p>
+
+</div>
+  <a href="/"> Вернуться на главную</a>
+
+</body>
+</html>

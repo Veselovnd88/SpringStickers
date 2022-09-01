@@ -1,31 +1,27 @@
 package ru.veselov.springstickers.model;
 
-import ru.veselov.springstickers.exception.InterruptOperationException;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.SimpleDateFormat;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 
 
 public class Paper {
-	private final int WIDTH = 1240 ;//размер взят для DPI 150
-	private final int HEIGHT = 1754 ;
-	
-	private final static int LABELWIDTH = LabelSticker.WIDTH;
-	private final static int LABELHEIGHT = LabelSticker.HEIGHT;
-	private static final int LEFTEDGE = 59;
-	
+	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
+	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
+	private static final int LEFTEDGE = 177;//отступ слева от края листа
+	private static final int BETWEEN=48;
 	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
 		
-	private BufferedImage myImage;
-	private Graphics g;
+	private final BufferedImage myImage;
+	private final Graphics g;
 
 	
 	static {//статик блок для инициализации координатами мапы
@@ -34,98 +30,60 @@ public class Paper {
 			if(i<5) {
 				coordinates.get(i).add(LABELHEIGHT);
 				if(i==1) {
-				coordinates.get(i).add((LEFTEDGE+(i-1)*LABELWIDTH));}//59 расстояние от левого края
+					coordinates.get(i).add((LEFTEDGE));}//59 расстояние от левого края
 				else {
-					coordinates.get(i).add(16*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
+					coordinates.get(i).add(BETWEEN*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
 				}					
 			}
-			else if(i>=5&& i<9) {
+			else if(i<9) {
 				coordinates.get(i).add(LABELHEIGHT*2);
 				if(i==5) {
-				coordinates.get(i).add((LEFTEDGE+(i-5)*LABELWIDTH));}
+					coordinates.get(i).add((LEFTEDGE));}
 				else {
-					coordinates.get(i).add(16*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
+					coordinates.get(i).add(BETWEEN*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
 				}	
 			}
-			else if(i>=9&& i<13) {
+			else {
 				coordinates.get(i).add(LABELHEIGHT*3);
 				if(i==9) {
-				coordinates.get(i).add((LEFTEDGE+(i-9)*LABELWIDTH));}
+					coordinates.get(i).add((LEFTEDGE));}
 				else {
-					coordinates.get(i).add(16*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
+					coordinates.get(i).add(BETWEEN*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
 				}	
 			}
-			
 		}
-		
 	}
 	
 	public Paper() {
-		myImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
+		//высота
+		int HEIGHT = 5262;
+		// ширина в пикселях, размер взят для DPI 450
+		int WIDTH = 3720;
+		myImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
 		g = myImage.getGraphics();
 	    g.setColor(Color.WHITE);
 	    g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 
-	
-	public void draw(Image im,int x, int y) {//рисует переданный имейдж на поле
+	/*Метод размещает(рисует) переданную этикету по заданным координатам*/
+	private void drawLabel(Image im, int x, int y) {
 		g.drawImage(im, x, y, null);
-		
 	}
 	//метод размещает все этикетки по координатам и рисует на данном Image
-	public void placeAll(Map<Integer, LabelSticker> labels) {
+	private void drawAllImages(Map<Integer, LabelSticker> labels) {
 		for(Map.Entry<Integer, LabelSticker> entry: labels.entrySet()) {
 			int x = coordinates.get(entry.getKey()).get(1);
 			int y = coordinates.get(entry.getKey()).get(0);
-			draw(entry.getValue().createImage(),x,y );
-			
-		}
-	}
-	public File saveWeb() throws IOException {
-
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMddHHmmss-");
-		Date date = new Date();
-		String timeStamp = formatter.format(date);
-		BufferedImage bi = (BufferedImage) myImage;
-		Path temp = Files.createTempFile(timeStamp,".jpg");
-		ImageIO.write(bi,"jpg",temp.toFile());
-		return temp.toFile();
-	}
-
-	public void save(String directory) throws InterruptOperationException {
-	//	String windows = "c:\\StickersADZ";
-		//String linux = "/home/nikolay/StickersADZ";
-		Path path = Path.of(directory);//("c:\\StickersADZ");
-		
-		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date date = new Date();
-		String timeStamp = formater.format(date);
-		Path file = Path.of(directory+"/_sticker_"+timeStamp+".jpg");
-		try {
-			if(!Files.exists(path)) {
-				System.out.println(path.getFileName());
-				Files.createDirectory(path);}
-			else {
-				if(!Files.exists(file)) {
-					file = Files.createFile(file);
-				}
-				
-				BufferedImage bi = (BufferedImage) myImage;
-
-				ImageIO.write(bi, "jpg", file.toFile());}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			throw new InterruptOperationException();
+			drawLabel(entry.getValue().createImage(),x,y );//размещение всех этикеток на листе
 		}
 	}
 
-
-
-	// сохранение в pdf
-	public void savePdf() {
-		File file = new File("src/controller/outfile/"+"paperPdf".
-				replace(' ', '_') + ".pdf");
-
+	public InputStream saveWeb(Map<Integer, LabelSticker> labels) throws IOException {
+		drawAllImages(labels);
+		ByteArrayOutputStream baos =new ByteArrayOutputStream();
+		ImageIO.write((BufferedImage) myImage,"jpg",baos);//пишем в созданный файл
+		return new ByteArrayInputStream(baos.toByteArray());
 	}
+
 
 }

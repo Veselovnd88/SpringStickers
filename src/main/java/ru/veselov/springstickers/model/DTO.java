@@ -5,12 +5,26 @@ import javax.validation.constraints.Size;
 
 //класс для передачи из формы в контроллер данных о позиции и артикулу
 public class DTO {
-
     private int pos=1;
-
     private int art=1;
+    public void setPos(int pos) {//сеттер для DTO
+        this.pos = pos;
+    }
+
+    public void setArt(int art) {//сеттер для DTO
+        this.art = art;
+    }
+
+    public void setSerial(String serial) {//сеттер для DTO
+        this.serial = serial;
+    }
+
+    public void setMessage(String message) {//сеттер для DTO TODO проверить кажется всё таки этот не нужен
+        this.message = message;
+    }
+
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min=2,max=13,message = "Серийный номер должен быть от 2 до 13 цифр")
+    @Size(min=2,max=15,message = "Серийный номер должен быть от 2 до 15 цифр")
     private String serial;
     private String message="Пока ничего не добавлено";
 
@@ -19,42 +33,17 @@ public class DTO {
         return message;
     }
 
-    public void setMessage(String message){
-        this.message=message;
-    }
-    public String getTask() {
-        return task;
-    }
-
-    public void setTask(String task) {
-        this.task = task;
-    }
-
-    private String task="Разместить";
-
     public String getSerial() {
         return serial;
     }
 
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
     public int getPos() {
         return pos;
-    }
-
-    public void setPos(int pos) {
-        this.pos = pos;
     }
 
     public int getArt() {
         return art;
     }
-
-    public void setArt(int art) {
-        this.art = art;
-    }
-
 
 
 }
