@@ -6,10 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.veselov.springstickers.exception.InterruptOperationException;
-import ru.veselov.springstickers.model.DAOarticles;
-import ru.veselov.springstickers.model.DTO;
-import ru.veselov.springstickers.model.LabelFactory;
-import ru.veselov.springstickers.model.LabelSticker;
+import ru.veselov.springstickers.model.*;
+import ru.veselov.springstickers.services.LabelService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,16 +19,19 @@ import java.util.*;
 @RequestMapping("/")
 @SessionAttributes("map")//атрибут который хранится в течение всей сессии
 public class SpringLabelController {
-    private final DAOarticles daOarticles;//дао потом будем пользоваться также для передачи номеров в общую базу
-    private final List<LabelSticker> list;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
+    /*LabelEntityList - получаем список из бд через сервис и помещаем в список
+    * Этот список отвечает за выпадающее меню*/
+    private final List<LabelEntity> labelEntityList;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
+    private final LabelService labelService;
     @Autowired
-    public SpringLabelController(DAOarticles daOarticles) {
-        this.daOarticles = daOarticles;
-        this.list = daOarticles.index();
+    public SpringLabelController(DAOarticles daOarticles, LabelService labelService) {
+        this.labelService = labelService;
+        this.labelEntityList = labelService.findAll();
     }
 
-    @ModelAttribute("map")//получение атрибута Session attribute - который мы храним во время сессии дял всех методов
-    //эта мапа со всеми позициями  №Позиция=Этикета
+    @ModelAttribute("map")
+    /*получение атрибута Session attribute - который мы храним во время сессии дял всех методов
+    эта мапа со всеми позициями  №Позиция=Этикетка*/
     public Map<Integer,LabelSticker> getMap(){
         return new TreeMap<>();
     }
@@ -40,7 +41,7 @@ public class SpringLabelController {
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
-        model.addAttribute("list",list);//ниспадающий список вместо радиокнопок
+        model.addAttribute("list", labelEntityList);//выпадающий список вместо радиокнопок
         model.addAttribute("map",map);//добавили мапу, которая сешн атрибут
         return "/index";
     }
@@ -53,7 +54,7 @@ public class SpringLabelController {
                           BindingResult bindingResult, Model model,
                           @ModelAttribute("map") Map<Integer,LabelSticker> map) {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
-        model.addAttribute("list",list);
+        model.addAttribute("list", labelEntityList);
         //для того чтобы он формировал форму через таймлиф нужно обязательно передавать сюда
         if(bindingResult.hasErrors()){
             System.out.println("Нашел ошибки");
@@ -63,8 +64,10 @@ public class SpringLabelController {
         }
         map= (Map<Integer, LabelSticker>) model.getAttribute("map");
         int art= dto.getArt();
-        LabelSticker receivedLabel =list.stream().filter(x->x.getId()==art).findAny()
-                .orElse(new LabelSticker("Error","Error","Error","Error","Error",-1));
+        /*получили артикул и теперь должны на его основе сделать Стикер, поиск по списку по Id
+        * И далее конструирование по полям через фабрику*/
+        LabelEntity receivedLabel = labelEntityList.stream().filter(x->x.getId()==art).findAny()
+                .orElse(null);
         LabelSticker lab = LabelFactory.getLabel(
                 receivedLabel.getName(), receivedLabel.getRange(),
                 receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
@@ -79,7 +82,7 @@ public class SpringLabelController {
                          Model model,
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
         map.remove(dto.getPos());
-        model.addAttribute("list",list);
+        model.addAttribute("list", labelEntityList);
         return "/index";
     }
     @PostMapping(params = "reset")
@@ -88,7 +91,7 @@ public class SpringLabelController {
                          Model model,
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
         map.clear();
-        model.addAttribute("list",list);
+        model.addAttribute("list", labelEntityList);
         return "/index";
     }
 
@@ -118,13 +121,13 @@ public class SpringLabelController {
         in.transferTo(out);
         out.close();
         in.close();
-        daOarticles.addSerials(serials);
+        //daOarticles.addSerials(serials);
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
     }
     @GetMapping("/show")
     public String show(Model model){
 
-        model.addAttribute("list",list);
+        model.addAttribute("list", labelEntityList);
         return "/show";
     }
 }
