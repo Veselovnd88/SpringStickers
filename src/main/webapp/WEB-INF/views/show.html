@@ -11,11 +11,23 @@
 <body>
 <p> Список артикулов </p>
 <div th:each = "lbl : ${list}">
-
-  <!--<a th:href="@{/people/{id}(id=${person.getId()})}"-->
-  <p th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}"> article</p>
+  <a th:href="@{/show/{id}(id=${lbl.getId()})}"
+    th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}"> article</a>
 
 </div>
+  <div th:if="${page+1}<${max_page}">
+    <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page+1},
+    items_per_page=${items_per_page})}"
+       th:text="'Перейти на следующую страницу'">go next</a>
+  </div>
+<div th:if="${page-1}>-1">
+  <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page-1},
+    items_per_page=${items_per_page})}"
+     th:text="'Перейти на предыдущую страницу'">go next</a>
+
+</div>
+
+  <hr>
   <a href="/"> Вернуться на главную</a>
 
 </body>

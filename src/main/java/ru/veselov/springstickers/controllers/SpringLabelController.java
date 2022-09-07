@@ -1,6 +1,8 @@
 package ru.veselov.springstickers.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -111,7 +113,7 @@ public class SpringLabelController {
         }
         controllerInt.getModel().setMap(receivedMap);
         InputStream in = controllerInt.getModel().save();
-        List<LabelSticker> serials= new ArrayList<>(map.values());
+        //List<LabelSticker> serials= new ArrayList<>(map.values());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();
         String timeStamp = formatter.format(date);
@@ -124,10 +126,37 @@ public class SpringLabelController {
         //daOarticles.addSerials(serials);
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
     }
-    @GetMapping("/show")
-    public String show(Model model){
 
-        model.addAttribute("list", labelEntityList);
-        return "/show";
+
+    /*Метод выводит все заведенные типы номенклатур
+    * Возможна настройка пагинации через RequestParam
+    * Если параметры не передаются - то выводится первая страница с 10 ю позициями.
+    * Если передаются, то выбираем что и как хотим видеть
+    * Добавлены ссылки Предыдущая и Следующая (для определения максимального количества страниц и текущей страницы
+    * для таймлифа передаем их значения в модель аттрибют
+    * @return представление из views*/
+    @GetMapping("/show")
+    public String show(Model model, @RequestParam(value = "page",required = false) Integer page,
+                       @RequestParam(value = "items_per_page",required = false) Integer items_per_page){
+        String returnPage = "/show";
+        if(page==null || items_per_page==null){
+            page=0;
+            items_per_page=10;
+
+        }
+        Pageable pageable=PageRequest.of(page,items_per_page);
+        int max_page = labelService.getMaxPage(pageable);
+        model.addAttribute("list",labelService.findAll(pageable));
+        model.addAttribute("max_page", max_page);
+        model.addAttribute("page",page);
+        model.addAttribute("items_per_page",items_per_page);
+        return returnPage;
+    }
+    /*Выдача информации о запрашиваемом по id артикуле
+    * @return представление из /views*/
+    @GetMapping("/show/{id}")
+    public String show(Model model, @PathVariable("id") int id){
+        model.addAttribute("lbl",labelService.findById(id));
+        return "/show_card";
     }
 }
