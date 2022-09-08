@@ -24,8 +24,8 @@ public class PaperTest {
     public void testSaveWeb() {
         try {
             /*Тестирование на нулл и на возможность чтения*/
-            Assert.assertNotNull(paper.saveWeb(testMap));
-            Assert.assertNotEquals(paper.saveWeb(testMap).read(),-1);
+            Assert.assertNotNull(paper.saveWeb());
+            Assert.assertNotEquals(paper.saveWeb().read(),-1);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

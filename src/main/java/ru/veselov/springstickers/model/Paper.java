@@ -1,5 +1,8 @@
 package ru.veselov.springstickers.model;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,83 +10,108 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-
+@Component
 public class Paper {
-	private final static int LABELWIDTH = LabelSticker.WIDTH;//ширина этикетки
-	private final static int LABELHEIGHT = LabelSticker.HEIGHT;//высота этикетки
-	private static final int LEFTEDGE = 177;//отступ слева от края листа
+	/*Ширина этикетки*/
+	private final static int LABEL_WIDTH = LabelSticker.WIDTH;
+	/*Высотка этикетки*/
+	private final static int LABEL_HEIGHT = LabelSticker.HEIGHT;
+	/*Отступ от левого края*/
+	private static final int LEFT_EDGE = 177;//отступ слева от края листа
+	/*Расстояние меджду этикетками*/
 	private static final int BETWEEN=48;
-	private static final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
-		
+	/*Высота листа*/
+	private final int HEIGHT = 5262;
+	/*Ширина листа*/
+	private final int WIDTH = 3720;
+	/*Хешмап с координатами и позициями, заполняется при создании объекта
+	* Номер Позиции:  - список координат (x и y) */
+	private final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
+
+	/*Мапа с позициями и этикетками Позиция: этикетка*/
+	private Map<Integer, LabelSticker> posLabels = new TreeMap<>();//мапа в которой хранится #Позиции: этикетка
 	private final BufferedImage myImage;
 	private final Graphics g;
 
-	
-	static {//статик блок для инициализации координатами мапы
+	public Paper() {
+		init();
+		myImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);
+		g = myImage.getGraphics();
+		refresh();
+	}
+
+	/*Метод заполняет мапу coordinates значениями*/
+	private void init() {
 		for (int i=1; i<13;i++) {//13 - 12 позиций
 			coordinates.put(i, new ArrayList<Integer>());
 			if(i<5) {
-				coordinates.get(i).add(LABELHEIGHT);
+				coordinates.get(i).add(LABEL_HEIGHT);
 				if(i==1) {
-					coordinates.get(i).add((LEFTEDGE));}//59 расстояние от левого края
+					coordinates.get(i).add((LEFT_EDGE));}//59 расстояние от левого края
 				else {
-					coordinates.get(i).add(BETWEEN*(i-1)+LEFTEDGE+(i-1)*LABELWIDTH);//17 расстояние между этикетками
-				}					
+					coordinates.get(i).add(BETWEEN*(i-1)+ LEFT_EDGE +(i-1)* LABEL_WIDTH);//17 расстояние между этикетками
+				}
 			}
 			else if(i<9) {
-				coordinates.get(i).add(LABELHEIGHT*2);
+				coordinates.get(i).add(LABEL_HEIGHT *2);
 				if(i==5) {
-					coordinates.get(i).add((LEFTEDGE));}
+					coordinates.get(i).add((LEFT_EDGE));}
 				else {
-					coordinates.get(i).add(BETWEEN*(i-5)+LEFTEDGE+(i-5)*LABELWIDTH);
-				}	
+					coordinates.get(i).add(BETWEEN*(i-5)+ LEFT_EDGE +(i-5)* LABEL_WIDTH);
+				}
 			}
 			else {
-				coordinates.get(i).add(LABELHEIGHT*3);
+				coordinates.get(i).add(LABEL_HEIGHT *3);
 				if(i==9) {
-					coordinates.get(i).add((LEFTEDGE));}
+					coordinates.get(i).add((LEFT_EDGE));}
 				else {
-					coordinates.get(i).add(BETWEEN*(i-9)+LEFTEDGE+(i-9)*LABELWIDTH);
-				}	
+					coordinates.get(i).add(BETWEEN*(i-9)+ LEFT_EDGE +(i-9)* LABEL_WIDTH);
+				}
 			}
 		}
 	}
-	
-	public Paper() {
-		//высота
-		int HEIGHT = 5262;
-		// ширина в пикселях, размер взят для DPI 450
-		int WIDTH = 3720;
-		myImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);//создание листа с указанными размерами, здесь А4
-		g = myImage.getGraphics();
-	    g.setColor(Color.WHITE);
-	    g.fillRect(0, 0, WIDTH, HEIGHT);
+
+	/*Метод заливает форму белым цветом*/
+	private void refresh(){
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 
-	/*Метод размещает(рисует) переданную этикету по заданным координатам*/
+	/*Метод размещает(рисует) переданную этикетку по заданным координатам*/
 	private void drawLabel(Image im, int x, int y) {
 		g.drawImage(im, x, y, null);
 	}
-	//метод размещает все этикетки по координатам и рисует на данном Image
-	private void drawAllImages(Map<Integer, LabelSticker> labels) {
-		for(Map.Entry<Integer, LabelSticker> entry: labels.entrySet()) {
+
+	/*Метод размещает все этикетки по координатам и рисует на данном Image*/
+	private void drawAllImages() {
+		for(Map.Entry<Integer, LabelSticker> entry: posLabels.entrySet()) {
 			int x = coordinates.get(entry.getKey()).get(1);
 			int y = coordinates.get(entry.getKey()).get(0);
-			drawLabel(entry.getValue().createImage(),x,y );//размещение всех этикеток на листе
+			drawLabel(entry.getValue().createImage(),x,y );
 		}
 	}
 
-	public InputStream saveWeb(Map<Integer, LabelSticker> labels) throws IOException {
-		drawAllImages(labels);
+
+	/*В этом методе размещаются все этикетки, Image пишется в Стрим Массива Байтов
+	* @return Массив байтов ByteArrayInputStream для дальнейшего преобразования в другие потоки
+	* после того как создали, обновляем файл (чтобы наши результаты не мешали другим пользователям)*/
+	public InputStream saveWeb() throws IOException {
+		drawAllImages();
 		ByteArrayOutputStream baos =new ByteArrayOutputStream();
-		ImageIO.write((BufferedImage) myImage,"jpg",baos);//пишем в созданный файл
+		ImageIO.write((BufferedImage) myImage,"jpg",baos);
+		refresh();
 		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
+	public Map<Integer, LabelSticker> getPosLabels() {
+		return posLabels;
+	}
+
+	public void setPosLabels(Map<Integer, LabelSticker> posLabels) {
+		this.posLabels = posLabels;
+	}
 
 }

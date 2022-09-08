@@ -7,15 +7,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.veselov.springstickers.exception.InterruptOperationException;
 import ru.veselov.springstickers.model.*;
 import ru.veselov.springstickers.services.LabelService;
+import ru.veselov.springstickers.services.PaperService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 @RequestMapping("/")
@@ -25,20 +31,22 @@ public class SpringLabelController {
     * Этот список отвечает за выпадающее меню*/
     private final List<LabelEntity> labelEntityList;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
     private final LabelService labelService;
+    private final PaperService paperService;
     @Autowired
-    public SpringLabelController(DAOarticles daOarticles, LabelService labelService) {
+    public SpringLabelController(DAOarticles daOarticles, LabelService labelService, PaperService paperService) {
         this.labelService = labelService;
         this.labelEntityList = labelService.findAll();
+        this.paperService = paperService;
     }
 
     @ModelAttribute("map")
-    /*получение атрибута Session attribute - который мы храним во время сессии дял всех методов
+    /*Получение атрибута Session attribute - который мы храним во время сессии для всех методов
     эта мапа со всеми позициями  №Позиция=Этикетка*/
     public Map<Integer,LabelSticker> getMap(){
         return new TreeMap<>();
     }
     @GetMapping()
-    //для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
+    //Для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
     public String index(@ModelAttribute("dto") DTO dto, Model model,
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
@@ -48,8 +56,7 @@ public class SpringLabelController {
         return "/index";
     }
 
-    @PostMapping(params = "place")//ModelAttribute - создает указанный объект и передает его в ThymeLeaf
-    //для дальнейшего заполнения.
+    @PostMapping(params = "place")
     /*Метод через пост запрос забирает значения полей, срабатывает при клике на сабмит с именем
     * place. Далее исходя из значение позиции выбирает артикул и добавляет в мапу*/
     public String getData(@ModelAttribute("dto") @Valid DTO dto,
@@ -100,8 +107,7 @@ public class SpringLabelController {
     @RequestMapping("/download")
     public void download(Model model,
                          @ModelAttribute("map") Map<Integer,LabelSticker> map,
-                         HttpServletResponse response) throws IOException, InterruptOperationException {
-        ControllerInt controllerInt= new LabelController();
+                         HttpServletResponse response) throws IOException {
         Map<Integer,LabelSticker> receivedMap = (Map<Integer,LabelSticker>)model.getAttribute("map");
         if (receivedMap.isEmpty()){//проверяем мапу - если пустая то возвращаем информацию о том что ничего не добавлено
             String message = "Ничего не добавлено\n"+
@@ -111,8 +117,8 @@ public class SpringLabelController {
             pw.println(message);
             return;
         }
-        controllerInt.getModel().setMap(receivedMap);
-        InputStream in = controllerInt.getModel().save();
+        paperService.setPosLabels(receivedMap);
+        InputStream in = paperService.save();
         //List<LabelSticker> serials= new ArrayList<>(map.values());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();
