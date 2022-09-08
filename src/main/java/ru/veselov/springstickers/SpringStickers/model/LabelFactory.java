@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
 public class LabelFactory {
 	//Фабрика для создания этикетки

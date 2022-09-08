@@ -1,5 +1,7 @@
-package ru.veselov.springstickers.controllers;
+package ru.veselov.springstickers.SpringStickers.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -7,12 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.veselov.springstickers.model.*;
-import ru.veselov.springstickers.services.LabelService;
-import ru.veselov.springstickers.services.PaperService;
+import ru.veselov.springstickers.SpringStickers.model.*;
+import ru.veselov.springstickers.SpringStickers.services.PaperService;
+import ru.veselov.springstickers.SpringStickers.services.LabelService;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,7 +42,7 @@ public class SpringLabelController {
     @ModelAttribute("map")
     /*Получение атрибута Session attribute - который мы храним во время сессии для всех методов
     эта мапа со всеми позициями  №Позиция=Этикетка*/
-    public Map<Integer,LabelSticker> getMap(){
+    public Map<Integer, LabelSticker> getMap(){
         return new TreeMap<>();
     }
     @GetMapping()

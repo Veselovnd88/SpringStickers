@@ -1,6 +1,5 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;

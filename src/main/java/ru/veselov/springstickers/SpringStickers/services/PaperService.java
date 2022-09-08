@@ -1,14 +1,13 @@
-package ru.veselov.springstickers.services;
+package ru.veselov.springstickers.SpringStickers.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.veselov.springstickers.model.LabelSticker;
-import ru.veselov.springstickers.model.Paper;
+import ru.veselov.springstickers.SpringStickers.model.Paper;
+import ru.veselov.springstickers.SpringStickers.model.LabelSticker;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.TreeMap;
 
 @Service
 public class PaperService {

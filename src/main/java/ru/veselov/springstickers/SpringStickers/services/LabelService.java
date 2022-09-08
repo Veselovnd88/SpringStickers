@@ -1,11 +1,11 @@
-package ru.veselov.springstickers.services;
+package ru.veselov.springstickers.SpringStickers.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.veselov.springstickers.model.LabelEntity;
-import ru.veselov.springstickers.repositories.LabelRepository;
+import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
+import ru.veselov.springstickers.SpringStickers.repositories.LabelRepository;
 
 import java.util.List;
 import java.util.Optional;

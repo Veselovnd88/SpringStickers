@@ -4,6 +4,9 @@ package ru.veselov.springstickers.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.veselov.springstickers.SpringStickers.model.LabelFactory;
+import ru.veselov.springstickers.SpringStickers.model.LabelSticker;
+import ru.veselov.springstickers.SpringStickers.model.Paper;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,7 +1,7 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 //класс для передачи из формы в контроллер данных о позиции и артикулу
 public class DTO {

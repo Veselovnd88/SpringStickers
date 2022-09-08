@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
