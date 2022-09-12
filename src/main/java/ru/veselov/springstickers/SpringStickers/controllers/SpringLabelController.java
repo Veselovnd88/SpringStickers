@@ -108,6 +108,7 @@ public class SpringLabelController {
                          @ModelAttribute("map") Map<Integer,LabelSticker> map,
                          HttpServletResponse response) throws IOException {
         Map<Integer,LabelSticker> receivedMap = (Map<Integer,LabelSticker>)model.getAttribute("map");
+
         if (receivedMap.isEmpty()){//проверяем мапу - если пустая то возвращаем информацию о том что ничего не добавлено
             String message = "Ничего не добавлено\n"+
                     "<a href=\"/\"> Перейти на главную страницу </a>";
@@ -118,6 +119,14 @@ public class SpringLabelController {
         }
         paperService.setPosLabels(receivedMap);
         InputStream in = paperService.save();
+        if(in==null){
+            String message = "Проблема при формировании печати\n"+
+                    "<a href=\"/\"> Перейти на главную страницу </a>";
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter pw = response.getWriter();
+            pw.println(message);
+            return;
+        }
         //List<LabelSticker> serials= new ArrayList<>(map.values());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();

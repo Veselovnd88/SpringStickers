@@ -23,10 +23,7 @@ public class PaperService {
     }
 
     public InputStream save(){
-        try {
-            return this.paper.saveWeb();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return this.paper.saveWeb();
+
     }
 }
