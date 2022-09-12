@@ -97,18 +97,12 @@ public class Paper {
 	/*В этом методе размещаются все этикетки, Image пишется в Стрим Массива Байтов
 	* @return Массив байтов ByteArrayInputStream для дальнейшего преобразования в другие потоки
 	* после того как создали, обновляем файл (чтобы наши результаты не мешали другим пользователям)*/
-	public InputStream saveWeb() {
+	public InputStream saveWeb() throws IOException {
 		drawAllImages();
-
-
-		try (ByteArrayOutputStream baos =new ByteArrayOutputStream();)
-			{	ImageIO.write((BufferedImage) myImage,"jpg",baos);
-				refresh();
-				return new ByteArrayInputStream(baos.toByteArray());
-		} catch (IOException e) {
-			return null;
-		}
-
+		ByteArrayOutputStream baos =new ByteArrayOutputStream();
+		ImageIO.write((BufferedImage) myImage,"jpg",baos);
+		refresh();
+		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
 	public Map<Integer, LabelSticker> getPosLabels() {

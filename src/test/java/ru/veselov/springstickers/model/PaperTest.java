@@ -35,11 +35,12 @@ public class PaperTest {
 
     }
     @Test
-    public void testSaveWeb() {
-            /*Тестирование на нулл и на возможность чтения*/
+    public void testSaveWeb() throws IOException {
             /*Проверяет были ли вызовы методов*/
             mockPaper.saveWeb();
             Mockito.verify(mockPaper,times(1)).saveWeb();
+            Assert.assertNotNull("",paper.saveWeb());
+            Assert.assertNotEquals(-1,paper.saveWeb().read());
 
     }
 }
