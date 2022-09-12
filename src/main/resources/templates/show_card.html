@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>Все номенклатуры </title>
+    <link href="../static/css/style.css"
+          th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<p> Информация об артикуле </p>
+<div> <p th:text="${lbl.getId()+' '+lbl.getName()}"></p>
+    <p th:text="${'Артикул: '+lbl.getArticle()}"></p>
+    <p th:text="${'Диапазон измерения: '+lbl.getRange()}"></p>
+    <p th:text="${'Распиновка: '+lbl.getPinout()}"></p>
+    <p th:text="${'Производитель: '+lbl.getManufacturer()}"></p>
+</div>
+
+<hr>
+<a href="/show"> Вернуться к списку</a>
+</body>
+</html>

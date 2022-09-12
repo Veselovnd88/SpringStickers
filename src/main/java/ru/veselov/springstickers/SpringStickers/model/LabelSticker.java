@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.model;
+package ru.veselov.springstickers.SpringStickers.model;
 
 import org.springframework.jdbc.core.RowMapper;
 
