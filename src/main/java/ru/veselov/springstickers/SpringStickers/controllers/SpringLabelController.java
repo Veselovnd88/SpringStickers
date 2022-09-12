@@ -53,7 +53,7 @@ public class SpringLabelController {
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
         model.addAttribute("list", labelEntityList);//выпадающий список вместо радиокнопок
         model.addAttribute("map",map);//добавили мапу, которая сешн атрибут
-        return "/index";
+        return "index";
     }
 
     @PostMapping(params = "place")
@@ -66,8 +66,7 @@ public class SpringLabelController {
         model.addAttribute("list", labelEntityList);
         //для того чтобы он формировал форму через таймлиф нужно обязательно передавать сюда
         if(bindingResult.hasErrors()){
-            System.out.println("Нашел ошибки");
-            return "/index";//если поля не прошли валидацию - возвращает ту же страницу
+            return "index";//если поля не прошли валидацию - возвращает ту же страницу
             //тут должен был быть не редирект, а ссылка на первую страницу представления
             //теперь надо написать в таймлифе эти ошибки
         }
@@ -83,7 +82,7 @@ public class SpringLabelController {
                 if(map!=null){
                     map.put(dto.getPos(),lab);}
         model.addAttribute("map",map);
-        return "/index";
+        return "index";
     }
     @PostMapping(params = "delete")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
@@ -92,7 +91,7 @@ public class SpringLabelController {
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
         map.remove(dto.getPos());
         model.addAttribute("list", labelEntityList);
-        return "/index";
+        return "index";
     }
     @PostMapping(params = "reset")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
@@ -101,7 +100,7 @@ public class SpringLabelController {
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
         map.clear();
         model.addAttribute("list", labelEntityList);
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/download")
@@ -144,7 +143,7 @@ public class SpringLabelController {
     @GetMapping("/show")
     public String show(Model model, @RequestParam(value = "page",required = false) Integer page,
                        @RequestParam(value = "items_per_page",required = false) Integer items_per_page){
-        String returnPage = "/show";
+        String returnPage = "show";
         if(page==null || items_per_page==null){
             page=0;
             items_per_page=10;
@@ -163,6 +162,6 @@ public class SpringLabelController {
     @GetMapping("/show/{id}")
     public String show(Model model, @PathVariable("id") int id){
         model.addAttribute("lbl",labelService.findById(id));
-        return "/show_card";
+        return "show_card";
     }
 }
