@@ -26,11 +26,11 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/","/show","/download","/login").permitAll()
-                .antMatchers("/admin","/add").hasAnyRole("ADMIN")
+                .antMatchers("/admin","/admin/add","/admin/serials","/admin/manage").hasAnyRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/process")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/admin")
                 .failureUrl("/login?error")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
