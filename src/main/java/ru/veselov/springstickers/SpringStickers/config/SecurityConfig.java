@@ -26,7 +26,8 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/","/show","/download","/login").permitAll()
-                .antMatchers("/admin","/admin/add","/admin/serials","/admin/manage").hasAnyRole("ADMIN")
+                .antMatchers("/admin","/admin/add","/admin/serials","/admin/manage",
+                        "/admin/edit/{\\d+}","/admin/delete/{\\d+}").hasAnyRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/process")

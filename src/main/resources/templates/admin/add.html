@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление артикула</title>
+</head>
+<body>
+    <form th:method="POST" th:action="@{/admin/add}" th:object="${label}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <label for="article"> Введите артикул </label>
+        <input type="text" th:field="*{article}" id="article">
+        <div style="color:red" th:if="${#fields.hasErrors('article')}" th:errors="*{article}"> Wrong input article</div>
+        <br>
+        <label for="name"> Введите наименование</label>
+        <input type="text" th:field="*{name}" id="name">
+        <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Wrong name</div>
+        <br>
+        <label for="range"> Введите диапазон</label>
+        <input type="text" th:field="*{range}" id="range">
+        <div style="color:red" th:if="${#fields.hasErrors('range')}" th:errors="*{range}"> Wrong range</div>
+        <br>
+        <label for="pinout"> Введите распиновку</label>
+        <input type="text" th:field="*{pinout}" id="pinout">
+        <div style="color:red" th:if="${#fields.hasErrors('pinout')}" th:errors="*{pinout}"> Wrong user</div>
+        <br>
+        <label for="manufacturer"> Введите наименование изготовителя</label>
+        <input type="text" th:field="*{manufacturer}" id="manufacturer">
+        <div style="color:red" th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"> Wrong user</div>
+        <br>
+        <input type="submit" value="Добавить"/>
+        </form>
+</body>
+</html>

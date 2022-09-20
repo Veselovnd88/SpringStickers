@@ -5,6 +5,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -169,8 +172,17 @@ public class SpringLabelController {
     /*Выдача информации о запрашиваемом по id артикуле
     * @return представление из /views*/
     @GetMapping("/show/{id}")
-    public String show(Model model, @PathVariable("id") int id){
-        model.addAttribute("lbl",labelService.findById(id));
+    public String show(@ModelAttribute("label") LabelEntity labelEntity, Model model, @PathVariable("id") int id){
+        labelEntity = labelService.findById(id);
+        model.addAttribute("lbl",labelEntity);
+        Boolean isAdminDetected = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->
+                x.getAuthority().equals("ROLE_ADMIN"));
+        model.addAttribute("isAdmin",isAdminDetected);
         return "show_card";
     }
+
+
+
+
+
 }

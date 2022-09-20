@@ -37,6 +37,17 @@ public class LabelService {
         Optional<LabelEntity> label = labelRepository.findById(id);
         return label.orElse(null);
     }
+    @Transactional
+    public void deleteById(int id){
+        labelRepository.deleteById(id);
+    }
 
+    public Optional<LabelEntity> findByArticle(String article) {
+        return labelRepository.findByArticle(article);
+    }
 
+    @Transactional
+    public void save(LabelEntity labelEntity){
+        labelRepository.save(labelEntity);
+    }
 }
