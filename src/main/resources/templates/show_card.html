@@ -16,7 +16,15 @@
     <p th:text="${'Распиновка: '+lbl.getPinout()}"></p>
     <p th:text="${'Производитель: '+lbl.getManufacturer()}"></p>
 </div>
+<div th:if="${isAdmin}">
+    <form th:method="GET" th:action="@{/admin/edit/{id}(id=${lbl.getId()})}" th:object="${label}">
+        <input type="submit" value="Редактировать" name="edit">
+    </form>
+    <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${lbl.getId()})}" th:object="${label}">
+        <input type="submit" value="Удалить" name="delete">
+    </form>
 
+</div>
 <hr>
 <a href="/show"> Вернуться к списку</a>
 </body>

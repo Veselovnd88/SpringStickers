@@ -5,6 +5,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,13 +32,13 @@ import java.util.TreeMap;
 public class SpringLabelController {
     /*LabelEntityList - получаем список из бд через сервис и помещаем в список
     * Этот список отвечает за выпадающее меню*/
-    private final List<LabelEntity> labelEntityList;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
+    private  List<LabelEntity> labelEntityList;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
     private final LabelService labelService;
     private final PaperService paperService;
     @Autowired
     public SpringLabelController(DAOarticles daOarticles, LabelService labelService, PaperService paperService) {
         this.labelService = labelService;
-        this.labelEntityList = labelService.findAll();
+      //  this.labelEntityList = labelService.findAll();
         this.paperService = paperService;
     }
 
@@ -51,6 +54,7 @@ public class SpringLabelController {
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
+        labelEntityList = labelService.findAll();
         model.addAttribute("list", labelEntityList);//выпадающий список вместо радиокнопок
         model.addAttribute("map",map);//добавили мапу, которая сешн атрибут
         return "index";
@@ -169,8 +173,17 @@ public class SpringLabelController {
     /*Выдача информации о запрашиваемом по id артикуле
     * @return представление из /views*/
     @GetMapping("/show/{id}")
-    public String show(Model model, @PathVariable("id") int id){
-        model.addAttribute("lbl",labelService.findById(id));
+    public String show(@ModelAttribute("label") LabelEntity labelEntity, Model model, @PathVariable("id") int id){
+        labelEntity = labelService.findById(id);
+        model.addAttribute("lbl",labelEntity);
+        Boolean isAdminDetected = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->
+                x.getAuthority().equals("ROLE_ADMIN"));
+        model.addAttribute("isAdmin",isAdminDetected);
         return "show_card";
     }
+
+
+
+
+
 }

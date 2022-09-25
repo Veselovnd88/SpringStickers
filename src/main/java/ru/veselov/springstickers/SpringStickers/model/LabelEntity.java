@@ -2,6 +2,7 @@ package ru.veselov.springstickers.SpringStickers.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "articles")
@@ -12,18 +13,24 @@ public class LabelEntity {
     private int id;
     @NotEmpty(message = "Should be not empty")
     @Column(name = "article")
+    @Size(min = 1,max = 16)
     private String article;
     @NotEmpty(message ="Should be not empty" )
     @Column(name = "name")
+    @Size(min=1,max = 25)
     private String name;
     @NotEmpty(message = "should be not empty")
     @Column(name = "range")
+    @Size(min=1,max = 25)
     private String range;
-
+    @NotEmpty(message = "should be not empty")
     @Column(name="pinout")
+    @Size(min=1,max = 25)
     private String pinout;
 
+    @NotEmpty(message = "should be not empty")
     @Column(name = "manufacturer")
+    @Size(min=1,max=25)
     private String manufacturer;
 
     public LabelEntity(String article, String name, String range, String pinout, String manufacturer) {
@@ -79,5 +86,8 @@ public class LabelEntity {
 
     public int getId(){
         return id;
+    }
+    public void setId(int id){
+        this.id =id;
     }
 }
