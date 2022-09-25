@@ -8,6 +8,9 @@ import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
 
 import java.util.Optional;
+/*Кастомная валидация по артикулу
+* Класс имплементирует интерфейс Validator
+**/
 @Component
 public class LabelValidator implements Validator {
     private final LabelService labelService;
@@ -15,12 +18,14 @@ public class LabelValidator implements Validator {
     public LabelValidator(LabelService labelService) {
         this.labelService = labelService;
     }
-
+    /*Метод проверяет класс который передается на валидацию*/
     @Override
     public boolean supports(Class<?> clazz) {
         return LabelEntity.class.equals(clazz);
     }
-
+    /*Логика валидации
+    * Делаем запрос к бд по заданному артикулу, если такое значение есть, то пишем в ошибки значения
+    * Если нет, то всё в порядке и делаем возврат из функции*/
     @Override
     public void validate(Object target, Errors errors) {
         LabelEntity labelEntity= (LabelEntity) target;

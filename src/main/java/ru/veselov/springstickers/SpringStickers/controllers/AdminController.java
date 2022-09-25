@@ -21,26 +21,35 @@ public class AdminController {
         this.labelValidator = labelValidator;
         this.labelService = labelService;
     }
-
+    /*Метод GET по адресу /admin возвращает view с перечнем доступных операций*/
     @GetMapping()
     public String adminPage(){
         return "admin/admin";
     }
-
+    /*Метод GET по адресу /admin/manage возвращает view с операциями управления записями артикулов
+    * Удаление и редактирование*/
     @GetMapping("/manage")
     public String manage(){
         return "admin/manage";
     }
-
+    /*Метод GET по адресу /admin/serials возвращает view со списком серийных номеров
+    * Еще не реализовано TODO*/
     @GetMapping("/serials")
     public String showSerials(){
         return "admin/serials";
     }
-
+    /*Метод GET по адресу /admin/add возвращает view с формой заполнения полей требуемого артикула
+    * ModelAttribute передается как пустой объект и заполняется данными с формы для передачи методом POST */
     @GetMapping("/add")
     public String showAddForm(@ModelAttribute("label") LabelEntity labelEntity){
         return "admin/add";
     }
+    /*Метод POST принимает объект ModelAttribute
+    * Далее проходит валидация полей с помощью Валидатора Гибернейта
+    * И валидация артикула с помощью отдельного класса валидатора
+    * Ошибки пишутся в BindingResult
+    * Если есть ошибки возвращается обратно форма
+    * Если всё в порядке - пишется в бд*/
     @PostMapping("/add")
     public String addArticle(@ModelAttribute("label") @Valid LabelEntity labelEntity,
                              BindingResult bindingResult){
@@ -52,17 +61,18 @@ public class AdminController {
             labelService.save(labelEntity);
             return "redirect:/admin/manage";}
     }
-    /*Выдача страницы редактирования артикула
+    /*Метод GET по адресу admin/edit{id} с параметров edit
+    * Возвращает страницу редактирования артикула
     * По pathVariable определяется какой айди у артикула, получаем все данные из бд
-    * и пишем в модель*/
+    * и пишем в модель для заполнения полей*/
     @GetMapping(value = "/edit/{id}",params = "edit")
-    public String editForm(@PathVariable("id") int id,
-                           Model model){
+    public String editForm(@PathVariable("id") int id, Model model){
         LabelEntity label = labelService.findById(id);
         model.addAttribute("lbl",label);
         return "admin/edit";
     }
-    /*Вызов метода Пэтч из формы передает id и заполненный объект Ентити
+    /*Метод PATCH по адресу admin/edit/{id}
+    * из формы передает id и заполненный объект LabelEntity
     * Если мы не меняем артикул - срабатывает валидатор -и не дает сохранить под тем же артикулом
     * Для этого забираем артикул переданного id, и проверяем, если он такой же как тот который приходит из формы
     * То ничего не делаем, если другой- то проверяем валидатором, чтобы не попасть на ошибку БД
@@ -83,13 +93,13 @@ public class AdminController {
     }
 
 
-
+    /*Метод DELETE по адресу admin/delete{id} с параметром delete
+    * Происходит удаление элемента по id
+    * */
     @DeleteMapping(value = "/delete/{id}",params = "delete")
     public String delete(@PathVariable("id")int id){
         labelService.deleteById(id);
         return "redirect:/show";
     }
-
-
 
 }
