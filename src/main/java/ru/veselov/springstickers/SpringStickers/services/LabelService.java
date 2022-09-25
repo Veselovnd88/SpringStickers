@@ -38,6 +38,11 @@ public class LabelService {
         return label.orElse(null);
     }
     @Transactional
+    public void update(int id, LabelEntity labelEntity){
+        labelEntity.setId(id);
+        labelRepository.save(labelEntity);
+    }
+    @Transactional
     public void deleteById(int id){
         labelRepository.deleteById(id);
     }
