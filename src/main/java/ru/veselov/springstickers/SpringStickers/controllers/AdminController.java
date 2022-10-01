@@ -1,11 +1,13 @@
 package ru.veselov.springstickers.SpringStickers.controllers;
 
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.veselov.springstickers.SpringStickers.dto.LabelDTO;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
 import ru.veselov.springstickers.SpringStickers.util.LabelValidator;
@@ -16,10 +18,12 @@ public class AdminController {
 
     private final LabelValidator labelValidator;
     private final LabelService labelService;
+    private final ModelMapper modelMapper;
     @Autowired
-    public AdminController(LabelValidator labelValidator, LabelService labelService) {
+    public AdminController(LabelValidator labelValidator, LabelService labelService, ModelMapper modelMapper) {
         this.labelValidator = labelValidator;
         this.labelService = labelService;
+        this.modelMapper = modelMapper;
     }
     /*Метод GET по адресу /admin возвращает view с перечнем доступных операций*/
     @GetMapping()
@@ -51,16 +55,21 @@ public class AdminController {
     * Если есть ошибки возвращается обратно форма
     * Если всё в порядке - пишется в бд*/
     @PostMapping("/add")
-    public String addArticle(@ModelAttribute("label") @Valid LabelEntity labelEntity,
+    public String addArticle(@ModelAttribute("label") @Valid LabelDTO labelDTO,
                              BindingResult bindingResult){
-        labelValidator.validate(labelEntity,bindingResult);
+        labelValidator.validate(labelDTO,bindingResult);
         if(bindingResult.hasErrors()){
             return "admin/add";
         }
         else{
-            labelService.save(labelEntity);
+            labelService.save(convertToLabel(labelDTO));
             return "redirect:/admin/manage";}
     }
+
+    private LabelEntity convertToLabel(LabelDTO labelDTO){
+        return modelMapper.map(labelDTO, LabelEntity.class);
+    }
+
     /*Метод GET по адресу admin/edit{id} с параметров edit
     * Возвращает страницу редактирования артикула
     * По pathVariable определяется какой айди у артикула, получаем все данные из бд

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.repositories.LabelRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,7 @@ public class LabelService {
 
     @Transactional
     public void save(LabelEntity labelEntity){
+        labelEntity.setCreatedAt(LocalDateTime.now());
         labelRepository.save(labelEntity);
     }
 }

@@ -1,53 +1,29 @@
-package ru.veselov.springstickers.SpringStickers.model;
+package ru.veselov.springstickers.SpringStickers.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+public class LabelDTO {
 
-@Entity
-@Table(name = "articles")
-public class LabelEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     @NotEmpty(message = "Should be not empty")
-    @Column(name = "article")
     @Size(min = 1,max = 16)
     private String article;
     @NotEmpty(message ="Should be not empty" )
-    @Column(name = "name")
+
     @Size(min=1,max = 25)
     private String name;
     @NotEmpty(message = "should be not empty")
-    @Column(name = "range")
+
     @Size(min=1,max = 25)
     private String range;
+
     @NotEmpty(message = "should be not empty")
-    @Column(name="pinout")
     @Size(min=1,max = 25)
     private String pinout;
 
     @NotEmpty(message = "should be not empty")
-    @Column(name = "manufacturer")
     @Size(min=1,max=25)
     private String manufacturer;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    public LabelEntity(String article, String name, String range, String pinout, String manufacturer) {
-        this.article = article;
-        this.name = name;
-        this.range = range;
-        this.pinout = pinout;
-        this.manufacturer = manufacturer;
-    }
-
-    public LabelEntity() {
-    }
 
     public String getArticle() {
         return article;
@@ -87,20 +63,5 @@ public class LabelEntity {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
-    }
-
-    public int getId(){
-        return id;
-    }
-    public void setId(int id){
-        this.id =id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
