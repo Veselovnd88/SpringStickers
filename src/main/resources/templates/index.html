@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <title>Формирование файла с этикетками</title>
+  <link href="../static/css/style.css"
+        th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<h3> Добро пожаловать в программу для формирования файла с этикетками</h3>
+<p> Выберите номенклатуру</p>
+<a href="/show"> Все артикулы </a>
+
+<!--th:method - задает метод, th:action - задает адрес отправки метода-->
+<form th:method="POST" th:action="@{/}" th:object="${dto}">
+  <div class="artGroup">
+    Типы датчиков:
+    <br>
+    <p><select th:field="*{art}">
+      <!--цикл для пунктов списка-->
+      <option th:each="lbl : ${list}"
+              th:value="${lbl.getId()}"
+              th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}">
+        <!-- th:field-->
+      </option>
+    </select>
+  </div>
+  <p>Выберите позицию для размещения</p>
+  <div class="positions">
+    <p><select th:field="*{pos}">
+      <!--цикл для пунктов списка-->
+      <option th:each="i : ${#numbers.sequence(1,12)}"
+              th:value="${i} "
+              th:text="Поз. +${i}">
+        <!-- th:field-->
+      </option>
+    </select>
+      <br>
+      <label for="serial"> Серийный номер </label>
+      <input type="text" th:field="*{serial}" id="serial"/>
+      <div style="color:red" th:if="${#fields.hasErrors('serial')}" th:errors="*{serial}">  Serial number Error </div>
+      <br>
+          <input type="submit" style="width:200px;" name="place" value="Разместить"  th:value="Разместить" ></p>
+          <input type="submit" style="width:200px;"  name="delete" value="Удалить"  th:value="Удалить"></p>
+          <input type="submit" style="width:200px;"  name="reset" value="Сбросить"  th:value="Сбросить"></p>
+
+  </div>
+</form>
+<br>
+<form th:method="GET" th:action="@{/download}">
+  <input type="submit"  class="my_submits" style="width:200px;" value="Сохранить">
+</form>
+<br>
+<p>Добавлены следующие позиции </p>
+<div th:each="pos :${map}" th:with="lbl=${pos.value}" >
+  <p th:text="'Позиция '+${pos.key}+' Датчик '+${lbl.getName()}
++' : '+ ${lbl.getRange()}+' SN: '+${lbl.getSerial()}"
+  </p>
+</div>
+
+</body>
+</html>

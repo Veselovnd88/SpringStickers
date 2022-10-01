@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <title>Все номенклатуры </title>
+  <link href="../static/css/style.css"
+        th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<p> Список артикулов </p>
+<div th:each = "lbl : ${list}">
+  <a th:href="@{/show/{id}(id=${lbl.getId()})}"
+    th:text="${lbl.getId()+' '+lbl.getName()+' '+lbl.getRange()+' '+lbl.getPinout()}"> article</a>
+
+</div>
+  <div th:if="${page+1}<${max_page}">
+    <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page+1},
+    items_per_page=${items_per_page})}"
+       th:text="'Перейти на следующую страницу'">go next</a>
+  </div>
+<div th:if="${page-1}>-1">
+  <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page-1},
+    items_per_page=${items_per_page})}"
+     th:text="'Перейти на предыдущую страницу'">go next</a>
+
+</div>
+
+  <hr>
+  <a href="/"> Вернуться на главную</a>
+
+</body>
+</html>
