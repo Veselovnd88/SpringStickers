@@ -41,6 +41,7 @@ public class LabelService {
     @Transactional
     public void update(int id, LabelEntity labelEntity){
         labelEntity.setId(id);
+        labelEntity.setCreatedAt(LocalDateTime.now());
         labelRepository.save(labelEntity);
     }
     @Transactional
