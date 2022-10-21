@@ -35,6 +35,8 @@ public class LabelEntity {
     @Size(min=1,max=25)
     private String manufacturer;
 
+
+
     @OneToMany (mappedBy = "label")
     private Set<SerialEntity> serials;
 
@@ -95,4 +97,14 @@ public class LabelEntity {
     public void setId(int id){
         this.id =id;
     }
+
+    public Set<SerialEntity> getSerials() {
+        return serials;
+    }
+
+    public void setSerials(Set<SerialEntity> serials) {
+        this.serials = serials;
+    }
+
+
 }

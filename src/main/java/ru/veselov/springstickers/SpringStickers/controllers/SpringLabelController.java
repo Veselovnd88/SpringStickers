@@ -80,7 +80,7 @@ public class SpringLabelController {
         * И далее конструирование по полям через фабрику*/
         LabelEntity receivedLabel = labelEntityList.stream().filter(x->x.getId()==art).findAny()
                 .orElse(null);
-        LabelSticker lab = LabelFactory.getLabel(
+        LabelSticker lab = LabelFactory.getLabel(receivedLabel.getArticle(),
                 receivedLabel.getName(), receivedLabel.getRange(),
                 receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
                 if(map!=null){
@@ -141,6 +141,8 @@ public class SpringLabelController {
         in.transferTo(out);
         out.close();
         in.close();
+
+
         //daOarticles.addSerials(serials);
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
     }

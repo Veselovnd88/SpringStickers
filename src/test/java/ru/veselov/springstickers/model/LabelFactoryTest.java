@@ -8,6 +8,6 @@ import ru.veselov.springstickers.SpringStickers.model.LabelFactory;
 public class LabelFactoryTest {
     @Test
     public void testGetLabel() {
-        Assert.assertNotNull(LabelFactory.getLabel(null,null,null,null,null,-1));
+        Assert.assertNotNull(LabelFactory.getLabel(null,null,null,null,null,null,-1));
     }
 }
