@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "articles")
 public class LabelEntity {
@@ -32,6 +34,11 @@ public class LabelEntity {
     @Column(name = "manufacturer")
     @Size(min=1,max=25)
     private String manufacturer;
+
+
+
+    @OneToMany (mappedBy = "label")
+    private Set<SerialEntity> serials;
 
     public LabelEntity(String article, String name, String range, String pinout, String manufacturer) {
         this.article = article;
@@ -90,4 +97,14 @@ public class LabelEntity {
     public void setId(int id){
         this.id =id;
     }
+
+    public Set<SerialEntity> getSerials() {
+        return serials;
+    }
+
+    public void setSerials(Set<SerialEntity> serials) {
+        this.serials = serials;
+    }
+
+
 }

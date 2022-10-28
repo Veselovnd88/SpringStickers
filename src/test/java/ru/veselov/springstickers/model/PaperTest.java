@@ -29,7 +29,7 @@ public class PaperTest {
     @Before
     public void setUpBefore(){
         paper=  new Paper();
-        testSticker = LabelFactory.getLabel("Test","Test",
+        testSticker = LabelFactory.getLabel("Test","Test","Test",
                 "Test","Test","Test",1);
         testMap = new HashMap<>();
         testMap.put(1,testSticker);

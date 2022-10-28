@@ -5,8 +5,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.veselov.springstickers.SpringStickers.model.*;
 import ru.veselov.springstickers.SpringStickers.services.PaperService;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
+import ru.veselov.springstickers.SpringStickers.services.SerialService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -35,11 +31,13 @@ public class SpringLabelController {
     private  List<LabelEntity> labelEntityList;//list для списка этикеток, который мы помещаем в выпадающее меню в форме
     private final LabelService labelService;
     private final PaperService paperService;
+    private final SerialService serialService;
     @Autowired
-    public SpringLabelController(DAOarticles daOarticles, LabelService labelService, PaperService paperService) {
+    public SpringLabelController(DAOarticles daOarticles, LabelService labelService, PaperService paperService, SerialService serialService) {
         this.labelService = labelService;
       //  this.labelEntityList = labelService.findAll();
         this.paperService = paperService;
+        this.serialService = serialService;
     }
 
     @ModelAttribute("map")
@@ -80,7 +78,7 @@ public class SpringLabelController {
         * И далее конструирование по полям через фабрику*/
         LabelEntity receivedLabel = labelEntityList.stream().filter(x->x.getId()==art).findAny()
                 .orElse(null);
-        LabelSticker lab = LabelFactory.getLabel(
+        LabelSticker lab = LabelFactory.getLabel(receivedLabel.getArticle(),
                 receivedLabel.getName(), receivedLabel.getRange(),
                 receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
                 if(map!=null){
@@ -131,7 +129,7 @@ public class SpringLabelController {
             pw.println(message);
             return;
         }
-        //List<LabelSticker> serials= new ArrayList<>(map.values());
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();
         String timeStamp = formatter.format(date);
@@ -141,8 +139,10 @@ public class SpringLabelController {
         in.transferTo(out);
         out.close();
         in.close();
-        //daOarticles.addSerials(serials);
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
+        List<LabelSticker> stickersList= new ArrayList<>(map.values());
+        serialService.saveAll(stickersList);
+
     }
 
 

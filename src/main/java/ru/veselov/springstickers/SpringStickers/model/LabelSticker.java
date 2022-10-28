@@ -15,15 +15,17 @@ public class LabelSticker extends AbstractLabel{
 	protected static final int HEIGHT = 375;//высота
 	protected BufferedImage bufferedImage;
 	protected Graphics g;
+	private String article;
 	
 	
-	public LabelSticker(String name, String range, String pinout, String manufacturer, String serial, int id) {
+	public LabelSticker(String article,String name, String range, String pinout, String manufacturer, String serial, int id) {
 		this.name = name;
 		this.range = range;
 		this.pinout = pinout;
 		this.serial = serial;
 		this.manufacturer =manufacturer;
 		this.id=id;
+		this.article = article;
 		this.bufferedImage = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		this.g = this.bufferedImage.getGraphics();
 	    this.g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -88,5 +90,13 @@ public class LabelSticker extends AbstractLabel{
 	}
 	public String getManufacturer(){
 		return this.manufacturer;
+	}
+
+	public String getArticle() {
+		return article;
+	}
+
+	public void setArticle(String article) {
+		this.article = article;
 	}
 }
