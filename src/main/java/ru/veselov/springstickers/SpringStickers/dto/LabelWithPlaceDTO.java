@@ -1,12 +1,13 @@
-package ru.veselov.springstickers.SpringStickers.model;
+package ru.veselov.springstickers.SpringStickers.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import org.springframework.stereotype.Component;
 @Data
 //класс для передачи из формы в контроллер данных о позиции и артикулу
-public class DTO {
+public class LabelWithPlaceDTO {
     private int pos=1;
     private int art=1;
 
