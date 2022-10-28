@@ -1,6 +1,7 @@
-package ru.veselov.springstickers.SpringStickers.controllers;
+package ru.veselov.springstickers.SpringStickers.services.controllers;
 
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.veselov.springstickers.SpringStickers.dto.LabelDTO;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
 import ru.veselov.springstickers.SpringStickers.services.SerialService;
@@ -20,11 +22,14 @@ public class AdminController {
     private final LabelValidator labelValidator;
     private final LabelService labelService;
     private final SerialService serialService;
+
+    private final ModelMapper modelMapper;
     @Autowired
-    public AdminController(LabelValidator labelValidator, LabelService labelService, SerialService serialService) {
+    public AdminController(LabelValidator labelValidator, LabelService labelService, SerialService serialService, ModelMapper modelMapper) {
         this.labelValidator = labelValidator;
         this.labelService = labelService;
         this.serialService = serialService;
+        this.modelMapper = modelMapper;
     }
     /*Метод GET по адресу /admin возвращает view с перечнем доступных операций*/
     @GetMapping()
@@ -59,7 +64,7 @@ public class AdminController {
     /*Метод GET по адресу /admin/add возвращает view с формой заполнения полей требуемого артикула
     * ModelAttribute передается как пустой объект и заполняется данными с формы для передачи методом POST */
     @GetMapping("/add")
-    public String showAddForm(@ModelAttribute("label") LabelEntity labelEntity){
+    public String showAddForm(@ModelAttribute("label") LabelDTO labelDTO){
         return "admin/add";
     }
     /*Метод POST принимает объект ModelAttribute
@@ -69,16 +74,21 @@ public class AdminController {
     * Если есть ошибки возвращается обратно форма
     * Если всё в порядке - пишется в бд*/
     @PostMapping("/add")
-    public String addArticle(@ModelAttribute("label") @Valid LabelEntity labelEntity,
+    public String addArticle(@ModelAttribute("label") @Valid LabelDTO labelDTO,
                              BindingResult bindingResult){
-        labelValidator.validate(labelEntity,bindingResult);
+        labelValidator.validate(convertToLabel(labelDTO),bindingResult);
         if(bindingResult.hasErrors()){
             return "admin/add";
         }
         else{
-            labelService.save(labelEntity);
+            labelService.save(convertToLabel(labelDTO));
             return "redirect:/admin/manage";}
     }
+
+    private LabelEntity convertToLabel(LabelDTO labelDTO){
+        return modelMapper.map(labelDTO, LabelEntity.class);
+    }
+
     /*Метод GET по адресу admin/edit{id} с параметров edit
     * Возвращает страницу редактирования артикула
     * По pathVariable определяется какой айди у артикула, получаем все данные из бд
@@ -86,9 +96,14 @@ public class AdminController {
     @GetMapping(value = "/edit/{id}",params = "edit")
     public String editForm(@PathVariable("id") int id, Model model){
         LabelEntity label = labelService.findById(id);
-        model.addAttribute("lbl",label);
+        model.addAttribute("lbl",convertToLabelDTO(label));
         return "admin/edit";
     }
+    private LabelDTO convertToLabelDTO(LabelEntity labelEntity){
+        return modelMapper.map(labelEntity, LabelDTO.class);
+    }
+
+
     /*Метод PATCH по адресу admin/edit/{id}
     * из формы передает id и заполненный объект LabelEntity
     * Если мы не меняем артикул - срабатывает валидатор -и не дает сохранить под тем же артикулом
@@ -97,16 +112,16 @@ public class AdminController {
     * При вызове метода апдейт сервиса - на указанный ентити ставится переданный айди
     * И через репозиторий происходит сохранение*/
     @PatchMapping(value = "/edit/{id}")
-    public String edit(@PathVariable("id") int id, @ModelAttribute("lbl") @Valid LabelEntity labelEntity,
+    public String edit(@PathVariable("id") int id, @ModelAttribute("lbl") @Valid LabelDTO labelDTO,
                        BindingResult bindingResult){
         LabelEntity current = labelService.findById(id);
-        if(!current.getArticle().equals(labelEntity.getArticle())){
-            labelValidator.validate(labelEntity,bindingResult);
+        if(!current.getArticle().equals(labelDTO.getArticle())){
+            labelValidator.validate(labelDTO,bindingResult);
         }
         if(bindingResult.hasErrors()){
             return "admin/edit";
         }
-        labelService.update(id,labelEntity);
+        labelService.update(id,modelMapper.map(labelDTO, LabelEntity.class));
         return "redirect:/show";
     }
 

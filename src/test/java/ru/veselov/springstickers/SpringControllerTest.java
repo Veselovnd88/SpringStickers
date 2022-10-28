@@ -2,17 +2,21 @@ package ru.veselov.springstickers;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.veselov.springstickers.SpringStickers.SpringStickersApplication;
-import ru.veselov.springstickers.SpringStickers.controllers.SpringLabelController;
-import ru.veselov.springstickers.SpringStickers.model.DAOarticles;
+import ru.veselov.springstickers.SpringStickers.services.SerialService;
+import ru.veselov.springstickers.SpringStickers.services.controllers.SpringLabelController;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.model.LabelSticker;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
@@ -41,14 +45,15 @@ public class SpringControllerTest {
     private PaperService paperService;
 
     @MockBean
-    private DAOarticles daOarticles;
-    @MockBean
     private LabelEntity labelEntity;
 
+    @MockBean
+    private SerialService serialService;
 
     @Test
     public void testMainPage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/")).andExpect(MockMvcResultMatchers.status().isOk())
+        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("Добро пожаловать")));
 
@@ -63,12 +68,18 @@ public class SpringControllerTest {
     }
 
 /*Тест проверяет доступность страницы с карточкой номенклатуры
-    * Перед запуском - устанавливаемя поведение LabelService через Mockito - чтобы он возвращал корректный объект и у нас не
-    * ломался таймлиф*/
+    * Перед запуском - устанавливаем поведение LabelService через Mockito - чтобы он возвращал корректный объект и у нас не
+    * ломался таймлиф
+    * Устанавливаем моки секьюрити контекста, так как в представлении у нас есть правило которое зависит от
+    * роли пользователя*/
 
     @Test
     public void testShowCardPage() throws Exception {
         int id=1;
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Authentication authentication = Mockito.mock(Authentication.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
         when(labelService.findById(id)).thenReturn(labelEntity);
         mockMvc.perform(MockMvcRequestBuilders.get("/show/{id}",id)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("show_card"))

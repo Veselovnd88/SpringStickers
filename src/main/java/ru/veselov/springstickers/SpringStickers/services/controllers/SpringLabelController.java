@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.SpringStickers.controllers;
+package ru.veselov.springstickers.SpringStickers.services.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.veselov.springstickers.SpringStickers.dto.LabelWithPlaceDTO;
 import ru.veselov.springstickers.SpringStickers.model.*;
 import ru.veselov.springstickers.SpringStickers.services.PaperService;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
@@ -34,7 +35,8 @@ public class SpringLabelController {
     private final PaperService paperService;
     private final SerialService serialService;
     @Autowired
-    public SpringLabelController(DAOarticles daOarticles, LabelService labelService, PaperService paperService, SerialService serialService) {
+    public SpringLabelController(LabelService labelService, PaperService paperService, SerialService serialService) {
+
         this.labelService = labelService;
       //  this.labelEntityList = labelService.findAll();
         this.paperService = paperService;
@@ -49,7 +51,7 @@ public class SpringLabelController {
     }
     @GetMapping()
     //Для того чтобы все поля таймлифа были валидные - добавили в первые гет метод объект дто
-    public String index(@ModelAttribute("dto") DTO dto, Model model,
+    public String index(@ModelAttribute("labelWithPlaceDto") LabelWithPlaceDTO labelWithPlaceDto, Model model,
                         @ModelAttribute("map") Map<Integer, LabelSticker> map
                         ) {
         //указываем аргументов модель - для передачи туда мапы для генерации списка добавленных
@@ -62,7 +64,7 @@ public class SpringLabelController {
     @PostMapping(params = "place")
     /*Метод через пост запрос забирает значения полей, срабатывает при клике на сабмит с именем
     * place. Далее исходя из значение позиции выбирает артикул и добавляет в мапу*/
-    public String getData(@ModelAttribute("dto") @Valid DTO dto,
+    public String getData(@ModelAttribute("labelWithPlaceDto") @Valid LabelWithPlaceDTO labelWithPlaceDto,
                           BindingResult bindingResult, Model model,
                           @ModelAttribute("map") Map<Integer,LabelSticker> map) {//биндин резалт передает ошибки от валидации
         //для того чтобы таймлиф передавал значение кнопок th:field должно идти вместе с th:value
@@ -74,31 +76,31 @@ public class SpringLabelController {
             //теперь надо написать в таймлифе эти ошибки
         }
         map= (Map<Integer, LabelSticker>) model.getAttribute("map");
-        int art= dto.getArt();
+        int art= labelWithPlaceDto.getArt();
         /*получили артикул и теперь должны на его основе сделать Стикер, поиск по списку по Id
         * И далее конструирование по полям через фабрику*/
         LabelEntity receivedLabel = labelEntityList.stream().filter(x->x.getId()==art).findAny()
                 .orElse(null);
         LabelSticker lab = LabelFactory.getLabel(receivedLabel.getArticle(),
                 receivedLabel.getName(), receivedLabel.getRange(),
-                receivedLabel.getPinout(),receivedLabel.getManufacturer(), dto.getSerial(),receivedLabel.getId());
+                receivedLabel.getPinout(),receivedLabel.getManufacturer(), labelWithPlaceDto.getSerial(),receivedLabel.getId());
                 if(map!=null){
-                    map.put(dto.getPos(),lab);}
+                    map.put(labelWithPlaceDto.getPos(),lab);}
         model.addAttribute("map",map);
         return "index";
     }
     @PostMapping(params = "delete")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
-    public String delete(@ModelAttribute("dto") DTO dto,
+    public String delete(@ModelAttribute("labelWithPlaceDto") LabelWithPlaceDTO labelWithPlaceDto,
                          Model model,
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
-        map.remove(dto.getPos());
+        map.remove(labelWithPlaceDto.getPos());
         model.addAttribute("list", labelEntityList);
         return "index";
     }
     @PostMapping(params = "reset")
     //params - параметр который приходит с инпут сабмита в контроллер (name кнопки)
-    public String reset(@ModelAttribute("dto") DTO dto,
+    public String reset(@ModelAttribute("labelWithPlaceDto") LabelWithPlaceDTO labelWithPlaceDto,
                          Model model,
                          @ModelAttribute("map") Map<Integer, LabelSticker> map){
         map.clear();
