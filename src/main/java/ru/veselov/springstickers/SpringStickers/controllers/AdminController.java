@@ -2,12 +2,15 @@ package ru.veselov.springstickers.SpringStickers.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
+import ru.veselov.springstickers.SpringStickers.services.SerialService;
 import ru.veselov.springstickers.SpringStickers.util.LabelValidator;
 
 @Controller
@@ -16,10 +19,12 @@ public class AdminController {
 
     private final LabelValidator labelValidator;
     private final LabelService labelService;
+    private final SerialService serialService;
     @Autowired
-    public AdminController(LabelValidator labelValidator, LabelService labelService) {
+    public AdminController(LabelValidator labelValidator, LabelService labelService, SerialService serialService) {
         this.labelValidator = labelValidator;
         this.labelService = labelService;
+        this.serialService = serialService;
     }
     /*Метод GET по адресу /admin возвращает view с перечнем доступных операций*/
     @GetMapping()
@@ -35,8 +40,21 @@ public class AdminController {
     /*Метод GET по адресу /admin/serials возвращает view со списком серийных номеров
     * Еще не реализовано TODO*/
     @GetMapping("/serials")
-    public String showSerials(){
-        return "admin/serials";
+    public String showSerials(Model model, @RequestParam(value = "page",required = false) Integer page,
+                              @RequestParam(value = "items_per_page",required = false) Integer items_per_page){
+        String returnPage = "admin/serials";
+        if(page==null || items_per_page==null){
+            page=0;
+            items_per_page=10;
+
+        }
+        Pageable pageable= PageRequest.of(page,items_per_page);
+        int max_page = serialService.getMaxPage(pageable);
+        model.addAttribute("list",serialService.findAll(pageable));
+        model.addAttribute("max_page", max_page);
+        model.addAttribute("page",page);
+        model.addAttribute("items_per_page",items_per_page);
+        return returnPage;
     }
     /*Метод GET по адресу /admin/add возвращает view с формой заполнения полей требуемого артикула
     * ModelAttribute передается как пустой объект и заполняется данными с формы для передачи методом POST */

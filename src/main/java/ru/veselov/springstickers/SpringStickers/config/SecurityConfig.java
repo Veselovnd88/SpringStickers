@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import ru.veselov.springstickers.SpringStickers.services.PersonDetailsService;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 /*WebSecurityConfigurerAdapter помечен Deprecated, теперь нужно определить бины внутри этого класса*/
 public class SecurityConfig{
@@ -29,10 +31,10 @@ public class SecurityConfig{
                 .antMatchers("/admin","/admin/add","/admin/serials","/admin/manage",
                         "/admin/edit/{\\d+}","/admin/delete/{\\d+}").hasAnyRole("ADMIN")
                 .and()
-                .formLogin().loginPage("/login")
-                .loginProcessingUrl("/process")
-                .defaultSuccessUrl("/admin")
-                .failureUrl("/login?error")
+                    .formLogin().loginPage("/login")
+                    .loginProcessingUrl("/process")
+                    .defaultSuccessUrl("/admin")
+                    .failureUrl("/login?error")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
         return httpSecurity.build();

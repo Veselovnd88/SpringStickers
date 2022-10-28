@@ -1,6 +1,7 @@
 package ru.veselov.springstickers.SpringStickers.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
@@ -50,7 +51,11 @@ public class SerialService {
     }
 
 
+    public int getMaxPage(Pageable pageable) {
+       return repository.findAll(pageable).getTotalPages();
+    }
 
-
-
+    public List<SerialEntity> findAll(Pageable pageable){
+        return repository.findAll(pageable).getContent();
+    }
 }
