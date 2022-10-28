@@ -1,5 +1,9 @@
 package ru.veselov.springstickers.SpringStickers.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,7 +11,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
 public class LabelSticker extends AbstractLabel{
 
 
@@ -72,7 +75,7 @@ public class LabelSticker extends AbstractLabel{
 	      addSigns();//добавляем значки
 	      return this.bufferedImage;//возвращаем наше изображение
 	}
-	
+
 	public String getSerial() {
 		return this.serial;
 	}

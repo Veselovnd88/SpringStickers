@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org ">
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
   <title>Список серийных номеров</title>
 </head>
 <body>
-<h1>Not realized yet </h1>
-<a href="/admin> Вернуться </a>
+<p> Список всех номеров </p>
+<div th:each = "ser : ${list}">
+  <p
+     th:text="${'№: '+ser.getNum()+' -арт. '+ser.getLabel().getArticle()}"> Serial number</p>
+
+</div>
+<div th:if="${page+1}<${max_page}">
+  <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page+1},
+    items_per_page=${items_per_page})}"
+     th:text="'Перейти на следующую страницу'">go next</a>
+</div>
+<div th:if="${page-1}>-1">
+  <a th:href="@{/show?page={page}&items_per_page={items_per_page}(page=${page-1},
+    items_per_page=${items_per_page})}"
+     th:text="'Перейти на предыдущую страницу'">go next</a>
+
+</div>
+
+<hr>
+
+
+
+<a href="/admin"> Вернуться </a>
 </body>
 </html>

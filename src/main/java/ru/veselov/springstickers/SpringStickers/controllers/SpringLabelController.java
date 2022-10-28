@@ -2,6 +2,7 @@ package ru.veselov.springstickers.SpringStickers.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@Slf4j
 @Controller
 @RequestMapping("/")
 @SessionAttributes("map")//атрибут который хранится в течение всей сессии
@@ -129,7 +130,6 @@ public class SpringLabelController {
             pw.println(message);
             return;
         }
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mmssS");//шаблон для указания даты
         Date date = new Date();
         String timeStamp = formatter.format(date);
@@ -139,10 +139,10 @@ public class SpringLabelController {
         in.transferTo(out);
         out.close();
         in.close();
+        log.info("Изображение успешно выгружено пользователю, размещено {} этикеток",map.size());
         //скопировали из инпутстрима файла в аутпутстрим объекта респонз, и удаляем наш файл.
         List<LabelSticker> stickersList= new ArrayList<>(map.values());
         serialService.saveAll(stickersList);
-
     }
 
 

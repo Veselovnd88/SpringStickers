@@ -3,9 +3,12 @@ package ru.veselov.springstickers.SpringStickers.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
-
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "articles")
 public class LabelEntity {
@@ -35,8 +38,6 @@ public class LabelEntity {
     @Size(min=1,max=25)
     private String manufacturer;
 
-
-
     @OneToMany (mappedBy = "label")
     private Set<SerialEntity> serials;
 
@@ -47,64 +48,5 @@ public class LabelEntity {
         this.pinout = pinout;
         this.manufacturer = manufacturer;
     }
-
-    public LabelEntity() {
-    }
-
-    public String getArticle() {
-        return article;
-    }
-
-    public void setArticle(String article) {
-        this.article = article;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRange() {
-        return range;
-    }
-
-    public void setRange(String range) {
-        this.range = range;
-    }
-
-    public String getPinout() {
-        return pinout;
-    }
-
-    public void setPinout(String pinout) {
-        this.pinout = pinout;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public int getId(){
-        return id;
-    }
-    public void setId(int id){
-        this.id =id;
-    }
-
-    public Set<SerialEntity> getSerials() {
-        return serials;
-    }
-
-    public void setSerials(Set<SerialEntity> serials) {
-        this.serials = serials;
-    }
-
 
 }
