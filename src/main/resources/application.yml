@@ -1,0 +1,33 @@
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: ERROR
+        web: WARN
+
+spring:
+  profiles:
+    #active: prod
+    default: dev
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/stickers
+    username: postgres
+    password: hello123
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true;
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
