@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.SpringStickers.services.controllers;
+package ru.veselov.springstickers.SpringStickers.controllers;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -96,7 +96,7 @@ public class AdminController {
     @GetMapping(value = "/edit/{id}",params = "edit")
     public String editForm(@PathVariable("id") int id, Model model){
         LabelEntity label = labelService.findById(id);
-        model.addAttribute("lbl",convertToLabelDTO(label));
+        model.addAttribute("lbl",label);
         return "admin/edit";
     }
     private LabelDTO convertToLabelDTO(LabelEntity labelEntity){

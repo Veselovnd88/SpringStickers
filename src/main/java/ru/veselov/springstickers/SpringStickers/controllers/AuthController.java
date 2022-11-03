@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.SpringStickers.services.controllers;
+package ru.veselov.springstickers.SpringStickers.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

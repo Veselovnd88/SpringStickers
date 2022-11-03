@@ -1,4 +1,4 @@
-package ru.veselov.springstickers.SpringStickers.services.controllers;
+package ru.veselov.springstickers.SpringStickers.controllers;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

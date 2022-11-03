@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.veselov.springstickers.SpringStickers.SpringStickersApplication;
 import ru.veselov.springstickers.SpringStickers.services.SerialService;
-import ru.veselov.springstickers.SpringStickers.services.controllers.SpringLabelController;
+import ru.veselov.springstickers.SpringStickers.controllers.SpringLabelController;
 import ru.veselov.springstickers.SpringStickers.model.LabelEntity;
 import ru.veselov.springstickers.SpringStickers.model.LabelSticker;
 import ru.veselov.springstickers.SpringStickers.services.LabelService;
