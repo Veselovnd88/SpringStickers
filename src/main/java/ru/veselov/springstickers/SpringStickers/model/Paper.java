@@ -15,17 +15,17 @@ import java.util.List;
 @Component
 public class Paper {
 	/*Ширина этикетки*/
-	private final static int LABEL_WIDTH = LabelSticker.WIDTH;
+	private static final int LABEL_WIDTH = LabelSticker.WIDTH;
 	/*Высотка этикетки*/
-	private final static int LABEL_HEIGHT = LabelSticker.HEIGHT;
+	private static final int LABEL_HEIGHT = LabelSticker.HEIGHT;
 	/*Отступ от левого края*/
-	private static final int LEFT_EDGE = 177;//отступ слева от края листа
+	private static final int LEFT_EDGE = 110;//отступ слева от края листа
 	/*Расстояние меджду этикетками*/
-	private static final int BETWEEN=48;
+	private static final int BETWEEN=75;
 	/*Высота листа*/
-	private final int HEIGHT = 5262;
+	private static final int HEIGHT = 5262;
 	/*Ширина листа*/
-	private final int WIDTH = 3720;
+	private static final int WIDTH = 3720;
 	/*Хешмап с координатами и позициями, заполняется при создании объекта
 	* Номер Позиции:  - список координат (x и y) */
 	private final HashMap<Integer, List<Integer>> coordinates = new HashMap<>();//мапа с координатами и позициями
@@ -45,9 +45,9 @@ public class Paper {
 	/*Метод заполняет мапу coordinates значениями*/
 	private void init() {
 		for (int i=1; i<13;i++) {//13 - 12 позиций
-			coordinates.put(i, new ArrayList<Integer>());
+			coordinates.put(i, new ArrayList<>());
 			if(i<5) {
-				coordinates.get(i).add(LABEL_HEIGHT);
+				coordinates.get(i).add(230);
 				if(i==1) {
 					coordinates.get(i).add((LEFT_EDGE));}//59 расстояние от левого края
 				else {

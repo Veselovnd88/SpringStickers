@@ -15,7 +15,7 @@ public class LabelSticker extends AbstractLabel{
 
 
 	protected static final int WIDTH = 810;//ширина
-	protected static final int HEIGHT = 375;//высота
+	protected static final int HEIGHT = 350;//высота
 	protected BufferedImage bufferedImage;
 	protected Graphics g;
 	private String article;
