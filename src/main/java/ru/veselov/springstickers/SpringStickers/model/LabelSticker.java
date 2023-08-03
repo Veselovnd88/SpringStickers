@@ -1,8 +1,6 @@
 package ru.veselov.springstickers.SpringStickers.model;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.awt.Color;
 import java.awt.Font;

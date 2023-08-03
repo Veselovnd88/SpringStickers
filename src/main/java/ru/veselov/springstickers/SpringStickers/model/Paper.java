@@ -19,9 +19,9 @@ public class Paper {
 	/*Высотка этикетки*/
 	private static final int LABEL_HEIGHT = LabelSticker.HEIGHT;
 	/*Отступ от левого края*/
-	private static final int LEFT_EDGE = 110;//отступ слева от края листа
+	private static final int LEFT_EDGE = 70;//отступ слева от края листа
 	/*Расстояние меджду этикетками*/
-	private static final int BETWEEN=75;
+	private static final int BETWEEN=80;
 	/*Высота листа*/
 	private static final int HEIGHT = 5262;
 	/*Ширина листа*/
