@@ -19,9 +19,9 @@ public class Paper {
 	/*Высотка этикетки*/
 	private static final int LABEL_HEIGHT = LabelSticker.HEIGHT;
 	/*Отступ от левого края*/
-	private static final int LEFT_EDGE = 70;//отступ слева от края листа
+	private static final int LEFT_EDGE = 135;//отступ слева от края листа
 	/*Расстояние меджду этикетками*/
-	private static final int BETWEEN=80;
+	private static final int BETWEEN=90;
 	/*Высота листа*/
 	private static final int HEIGHT = 5262;
 	/*Ширина листа*/
@@ -47,7 +47,7 @@ public class Paper {
 		for (int i=1; i<13;i++) {//13 - 12 позиций
 			coordinates.put(i, new ArrayList<>());
 			if(i<5) {
-				coordinates.get(i).add(230);
+				coordinates.get(i).add(245);
 				if(i==1) {
 					coordinates.get(i).add((LEFT_EDGE));}//59 расстояние от левого края
 				else {
