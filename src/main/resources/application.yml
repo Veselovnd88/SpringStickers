@@ -26,7 +26,7 @@ spring:
   mvc:
     hiddenmethod:
       filter:
-        enabled: true;
+        enabled: on
 
   thymeleaf:
     prefix: classpath:/templates/

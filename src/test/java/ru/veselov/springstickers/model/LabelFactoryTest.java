@@ -2,7 +2,7 @@ package ru.veselov.springstickers.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.veselov.springstickers.SpringStickers.model.LabelFactory;
+import ru.veselov.springstickers.springstickers.model.LabelFactory;
 
 
 public class LabelFactoryTest {
